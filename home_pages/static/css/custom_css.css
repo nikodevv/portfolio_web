@@ -1,0 +1,50 @@
+/* Makes the navbar horizontal as opposed to vertical */
+.navbar.navbar-inverse.bg-inverse{
+	display: flex;
+	flex-direction: row;
+	padding-bottom: 0.1rem;
+}
+
+/* nikodev.ca "logo" */
+.navbar-inverse .navbar-brand {
+	display: inline-block;
+	font-size: 1.5rem;
+  color: #8cc1ff;
+
+	padding-bottom: 0.5rem;
+
+}
+
+/* overrides bootstrap spcificity to keep "logo" same color always */
+.navbar-inverse .navbar-brand:focus, .navbar-inverse .navbar-brand:hover,
+.navbar-inverse .navbar-toggler:focus,
+.navbar-inverse .navbar-toggler:hover{
+  color: #8cc1ff;
+}
+
+.navbar-inverse li:hover {
+  color: #8cc1ff;
+  border-bottom: 3px solid  #8cc1ff;
+  padding-bottom: 3px;
+}
+
+.bg-inverse {
+	/* Have to use important to override because bootstrap does as well*/
+  background-color: #292b2c !important;
+}
+
+/* temporary */
+.custom-nav-link {
+	display: inline-block;
+	/* bootstrap's font-family preference */
+	font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+	font-size: 1.5rem;
+	list-style: none;
+	color: white;
+
+  padding-top: 0.25rem; /* bootstrap's navbar-brand top margin is .25rem (used to center) */
+	padding-bottom: 0.5rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+
+}
