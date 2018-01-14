@@ -18,5 +18,6 @@ from django.contrib import admin
 from home_pages import views as homepage_views
 
 urlpatterns = [
-    url(r'^$', homepage_views.home_view, name='homepage')
+    url(r'^$', homepage_views.home_view, name='homepage'),
+    url(r'^contact$', homepage_views.contact_view, name='contact_page'),
 ]

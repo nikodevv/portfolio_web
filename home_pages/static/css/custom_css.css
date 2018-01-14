@@ -48,3 +48,9 @@
 	padding-right: 1rem;
 
 }
+
+/* used in styling of links */
+a.no-text-decor{
+	text-decoration: none;
+	color: white;
+}

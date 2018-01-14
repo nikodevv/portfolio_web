@@ -2,5 +2,7 @@ from django.shortcuts import render
 
 # Create your views here.
 def home_view(request):
-	print("view called")
 	return render(request, 'homepage.html')
+
+def contact_view(request):
+	return render(request, 'contact.html')

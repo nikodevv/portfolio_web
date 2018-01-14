@@ -20,6 +20,7 @@ from home_pages import views as homepage_views
 
 urlpatterns = [
     #url(r'^admin/', admin.site.urls),
-    url(r'^/home_pages/', include(homepage_urls)),
-    url(r'^$', homepage_views.home_view, name='homepage')
+    url(r'^$', homepage_views.home_view, name='homepage'),
+    url(r'^', include(homepage_urls)), #sets home_pages/urls.py as root
+
 ]
