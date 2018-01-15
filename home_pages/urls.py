@@ -21,4 +21,6 @@ urlpatterns = [
     url(r'^/$', homepage_views.home_view, name='homepage'),
     url(r'^contact/$', homepage_views.contact_view, name='contact_page'),
     url(r'^resume/$', homepage_views.resume_view, name='resume_page'),
+    url(r'^projects/toronto_sky/$', homepage_views.toronto_sky_view, name="toronto_sky_page"),
+    url(r'^projects/$', homepage_views.projects_view, name="projects_page"),
 ]

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Niko Oshinov - Projects{% endblock %}
+
+{% block bodyblock %} 
+<div class="d-flex flex-row justify-content-center">
+	<div class="w-25"></div>
+	<div class="w-35" id="body_text">
+		<ul class="custom-text-style">
+			<h2 class = "h2 mt-5 ">Parallax Theme - Toronto Skyline</h2>
+			<li class="list-unstyled">A javascript/css/html parallax scrolling website.</li>
+			<div class="projects-thumb">
+				<!--<a href="/static/pictures/projects/toronto_thumb.png"> -->
+					<img class="projects-thumb" src="/static/pictures/projects/toronto_thumb.png" alt="picture of Toronto Sky project"/>
+				<!--</a>-->
+			</div>
+		</ul>
+	</div>
+	<div class="w-25"></div>
+</div>
+{% endblock %}
+
+{% block jscode %}
+	<script>
+		$("#body_text").width($("#navigation_bar").width()) //found #navigation_bar is in base.html
+		//$("img").width($("#navigation_bar").width())
+	</script>
+{% endblock %}
