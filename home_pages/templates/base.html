@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width">
     <!-- The 3 metatags above must come above any other meta tags for bootstrap purposes -->
-    <title>To-Do lists</title>
+    <title>Niko Oshinov</title>
 
     <!-- Bootstrap -->
     <link href="/static/css/bootstrap.css" rel="stylesheet">
@@ -14,14 +14,20 @@
 
   <header>
   		<!--navigation bar start-->
-	    <div class="navbar navbar-inverse bg-inverse">
-	        <a href="#" class="navbar-brand">nikodev.ca</a>
-	        <ul class="d-flex flex-row mb-0">
-	        	<li class="custom-nav-link"><a href='/' class="no-text-decor">Home</a></li>
-	        	<li class="custom-nav-link">Projects</li>
-	        	<li class="custom-nav-link"><a href='contact' class="no-text-decor">Contact</a></li>
-	        </ul>
-	    </div>
+  		<div class="navbar navbar-inverse bg-inverse justify-content-center">
+
+		        <!--<div class=navbar-offset-box></div>-->
+		        <a href="#" class="navbar-brand">nikodev.ca</a>
+		        <!--<div class=navbar-offset-box-sm></div>-->
+		        <ul class="d-flex flex-row mb-0 w-100 justify-content-center">
+		        	<li class="custom-nav-link"><a href='/' class="no-text-decor">Home</a></li>
+		        	<li class="custom-nav-link">Projects</li>
+		        	<li class="custom-nav-link"><a href='contact' class="no-text-decor">Contact</a></li>
+		        	<li class="custom-nav-link">Resume</li>
+		        	<li class="custom-nav-link">Linkedin</li>
+		        	<li class="custom-nav-link">GitHub</li>
+		        </ul>
+		</div>
 		<!--navigation bar end-->
 	</header>
 
@@ -34,3 +40,7 @@
 
 {% block testblock %} {% endblock %}
 
+<script src="/static/jquery-3.2.1.js"></script>
+<script>
+$("li:contains('{{current_page}}')").addClass("selected");
+</script>

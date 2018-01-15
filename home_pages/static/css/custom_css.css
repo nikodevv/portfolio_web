@@ -7,12 +7,12 @@
 
 /* nikodev.ca "logo" */
 .navbar-inverse .navbar-brand {
-	display: inline-block;
+	position: absolute;
+	left:10%;
 	font-size: 1.5rem;
   color: #8cc1ff;
-
 	padding-bottom: 0.5rem;
-
+	margin: 0rem;
 }
 
 /* overrides bootstrap spcificity to keep "logo" same color always */
@@ -24,6 +24,9 @@
 
 .navbar-inverse li:hover {
   color: #8cc1ff;
+}
+
+.navbar-inverse li:active {
   border-bottom: 3px solid  #8cc1ff;
   padding-bottom: 3px;
 }
@@ -35,7 +38,7 @@
 
 /* temporary */
 .custom-nav-link {
-	display: inline-block;
+	display: block;
 	/* bootstrap's font-family preference */
 	font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 	font-size: 1.5rem;
@@ -46,11 +49,28 @@
 	padding-bottom: 0.5rem;
 	padding-left: 1rem;
 	padding-right: 1rem;
-
 }
 
-/* used in styling of links */
+/* used in styling of links, including in navbar*/
 a.no-text-decor{
 	text-decoration: none;
 	color: white;
+}
+/* used in styling of links, including in navbar*/
+a.no-text-decor:hover{
+  color: #8cc1ff;
+}
+
+.selected {
+  border-bottom: 3px solid  #8cc1ff;
+  padding-bottom: 3px;
+}
+
+.navbar-offset-box{
+	height: inherit;
+	width: 10%;
+}
+.navbar-offset-box-sm{
+	height: inherit;
+	width: 2.5%;
 }
