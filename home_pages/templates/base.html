@@ -17,30 +17,35 @@
   		<div class="navbar navbar-inverse bg-inverse justify-content-center">
 
 		        <!--<div class=navbar-offset-box></div>-->
-		        <a href="#" class="navbar-brand">nikodev.ca</a>
+		        <div class="w-100 mr-0">
+		        	<a href="#" class="navbar-brand">nikodev.ca</a>
+		    	</div>
 		        <!--<div class=navbar-offset-box-sm></div>-->
-		        <ul class="d-flex flex-row mb-0 w-100 justify-content-center">
+		        <ul class="d-flex flex-row mb-0 justify-content-center" id="navigation_bar">
 		        	<li class="custom-nav-link"><a href='/' class="no-text-decor">Home</a></li>
 		        	<li class="custom-nav-link">Projects</li>
 		        	<li class="custom-nav-link"><a href='contact' class="no-text-decor">Contact</a></li>
 		        	<li class="custom-nav-link">Resume</li>
-		        	<li class="custom-nav-link">Linkedin</li>
-		        	<li class="custom-nav-link">GitHub</li>
+		        	<li class="custom-nav-link"><a href="https://www.linkedin.com/in/nikolay-oshinov-358186a0/" class="no-text-decor">LinkedIn</a></li>
+		        	<li class="custom-nav-link"><a href="https://github.com/nikodevv" class="no-text-decor">GitHub</a></li>
 		        </ul>
+		      	<div class="d-flex w-100"></div>
 		</div>
 		<!--navigation bar end-->
 	</header>
 
   	<body>
-
-
-
+  		{% block bodyblock %} {% endblock %}
+  		
    	</body>
 </html>
 
-{% block testblock %} {% endblock %}
+
 
 <script src="/static/jquery-3.2.1.js"></script>
 <script>
-$("li:contains('{{current_page}}')").addClass("selected");
+	$("li:contains('{{current_page}}')").addClass("selected");
+
+	
 </script>
+	{% block jscode %}{% endblock%}

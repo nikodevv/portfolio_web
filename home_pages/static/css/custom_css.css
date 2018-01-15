@@ -1,3 +1,8 @@
+/*
+/ Navigation Bar Styling /
+*/
+
+
 /* Makes the navbar horizontal as opposed to vertical */
 .navbar.navbar-inverse.bg-inverse{
 	display: flex;
@@ -6,12 +11,14 @@
 }
 
 /* nikodev.ca "logo" */
+	/*position: absolute;
+	left:10%;*/
 .navbar-inverse .navbar-brand {
-	position: absolute;
-	left:10%;
+	float: right;
 	font-size: 1.5rem;
   color: #8cc1ff;
 	padding-bottom: 0.5rem;
+	padding-right: 1rem;
 	margin: 0rem;
 }
 
@@ -73,4 +80,20 @@ a.no-text-decor:hover{
 .navbar-offset-box-sm{
 	height: inherit;
 	width: 2.5%;
+}
+
+/*
+/ Body Styling /
+*/
+.w-35{
+	width: 35%;
+}
+
+.mt-5{
+	margin-top: 5%;
+}
+
+.custom-text-style{
+	font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+	font-size: 1.25rem;
 }
