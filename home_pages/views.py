@@ -6,3 +6,6 @@ def home_view(request):
 
 def contact_view(request):
 	return render(request, 'contact.html', {'current_page': 'Contact'})
+
+def resume_view(request):
+	return render(request, 'resume.html', {'current_page': 'Resume'})

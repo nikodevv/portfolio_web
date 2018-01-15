@@ -1,2 +1,24 @@
 {% extends 'base.html' %}
-{% block testblock %}{% endblock %}
+{% block bodyblock %}
+	<div class="d-flex flex-row justify-content-center">
+		<div class="w-25"></div>
+		<div class="w-35" id="body_text">
+			<h1 class = "h2 mt-5">Contact Information</h1>
+			<ul class="custom-text-style">
+				<li><a href="mailto:nick.oshinov@gmail.com">Email</a></li>
+				<li><a href="https://www.linkedin.com/in/nikolay-oshinov-358186a0/">LinkedIn</a></li>
+				<li><a href="https://github.com/nikodevv">GitHub</a></li>
+				<li><a href="">Discord: Santas Here#0205</a></li>
+				<li><a href="">Skype: merrycritmas</a></li>
+				<li><a href="https://open.spotify.com/user/12173646392">Spotify</a></li>
+			</ul>
+		</div>
+		<div class="w-25"></div>
+	</div>
+{% endblock %}
+
+{% block jscode %}
+	<script>
+		$("#body_text").width($("#navigation_bar").width()) //found #navigation_bar is in base.html
+	</script>
+{% endblock %}

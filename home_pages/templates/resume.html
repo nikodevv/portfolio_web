@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block bodyblock %} 
+	<div class="d-flex flex-row justify-content-center">
+		<div class="w-25"></div>
+		<div class="w-35" id="body_text">
+			<p class="mt-5 text-center custom-text-style">
+				My resume is readily available upon <a href="mailto:nick.oshinov@gmail.com">request</a>.
+			</p>
+		</div>
+		<div class="w-25"></div>
+	</div>
+{% endblock %}
+
+{% block jscode %}
+	<script>
+		$("#body_text").width($("#navigation_bar").width()) //found #navigation_bar is in base.html
+	</script>
+{% endblock %}

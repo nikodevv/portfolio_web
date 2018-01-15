@@ -24,8 +24,8 @@
 		        <ul class="d-flex flex-row mb-0 justify-content-center" id="navigation_bar">
 		        	<li class="custom-nav-link"><a href='/' class="no-text-decor">Home</a></li>
 		        	<li class="custom-nav-link">Projects</li>
-		        	<li class="custom-nav-link"><a href='contact' class="no-text-decor">Contact</a></li>
-		        	<li class="custom-nav-link">Resume</li>
+		        	<li class="custom-nav-link"><a href='/contact/' class="no-text-decor">Contact</a></li>
+		        	<li class="custom-nav-link"><a href='/resume/' class="no-text-decor">Resume</a></li>
 		        	<li class="custom-nav-link"><a href="https://www.linkedin.com/in/nikolay-oshinov-358186a0/" class="no-text-decor">LinkedIn</a></li>
 		        	<li class="custom-nav-link"><a href="https://github.com/nikodevv" class="no-text-decor">GitHub</a></li>
 		        </ul>
@@ -45,7 +45,5 @@
 <script src="/static/jquery-3.2.1.js"></script>
 <script>
 	$("li:contains('{{current_page}}')").addClass("selected");
-
-	
 </script>
 	{% block jscode %}{% endblock%}
