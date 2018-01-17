@@ -26,7 +26,7 @@ SECRET_KEY = 'u%z!9&nes^*&kfuxl#%na#*sse2vlc-%2ud^q@)z()8orce-n1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["nikodev.ca", "www.nikodev.ca"]
 
 
 # Application definition
