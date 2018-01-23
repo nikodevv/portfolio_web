@@ -146,6 +146,10 @@ img:hover{
   width: 55% !important;
 }
 
+.w-22{
+	width: 22.5%;
+}
+
 .sub-body{
 	padding-left: 3rem;
 	padding-right: 3rem;
