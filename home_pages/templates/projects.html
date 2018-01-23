@@ -3,27 +3,50 @@
 
 {% block bodyblock %} 
 <div class="d-flex flex-row justify-content-center">
-	<div class="w-25"></div>
-	<div class="w-35" id="body_text">
-		<ul class="custom-text-style">
-			<h2 class = "h2 mt-5 ">Parallax Theme - Toronto Skyline</h2>
-			<div class="projects-thumb zoom d-flex flex-row justify-content-center">
-				<a href="/projects/toronto_sky/">
-					<img src="/static/pictures/projects/toronto_thumb.png" alt="picture of Toronto Sky project"/>
-				</a>
+	<div class="w-10"></div>
+	<div class="w-55 mt-5" id="body_text">
+		<ul class="custom-text-style sm-font">
+			<h2 class = "h2 mt-2">quickData</h2>
+			<div class ="sub-body">
+				<li class="list-unstyled">
+					US-traded public companies' financial methodologies can vary based on industry, business model,
+					geographic location, and company-specific preferences. Any particular company's financials
+					can change significantly quarter to quarter, both in terms of account names, and statement
+					structure.<br><br>
+					<a class="text-center" href="https://github.com/nikodevv/quickData">quickData</a> is a python library which scraps the Secruities Exchange Comission (SEC) 
+					website for public filings and generates time-series data.
+					quickData is able to create n:m mappings between different financial reports of any given
+					publicly traded company and combine these filings to output time-series data.
+					<br>
+				
+				</li>
+				<div class="projects-thumb zoom d-flex flex-row justify-content-center">
+				<a href="https://github.com/nikodevv/quickData">
+					<img class="" src="/static/pictures/projects/quickData.png" alt="picture of git repo"/></a>
+				</div>
+				<li class="list-unstyled">
+					As an ongoing project, I intend to add a record of how quickData maps different filings 
+					to one another so as to have lossless and dynamically reversible mappings.
+				</li>
 			</div>
+			<h2 class="h2 mt-5">Parallax Theme - Toronto Skyline</h2>
+			<div class="sub-body">
+				<div class="projects-thumb zoom d-flex flex-row justify-content-center">
+					<a href="/projects/toronto_sky/">
+						<img src="/static/pictures/projects/toronto_thumb.png" alt="picture of Toronto Sky project"/>
+					</a>
+				</div>
 				<li class="list-unstyled">A javascript/css/html parallax scrolling
 					<a href="/projects/toronto_sky/">website</a>.</li>
-			
+			</div>
 		</ul>
 	</div>
-	<div class="w-25"></div>
+	<div class="w-10"></div>
 </div>
 {% endblock %}
 
 {% block jscode %}
 	<script>
-		$("#body_text").width($("#navigation_bar").width()) //found #navigation_bar is in base.html
 		$(".projects-thumb").width($("#navigation_bar").width())
 	</script>
 {% endblock %}

@@ -94,6 +94,10 @@ a.no-text-decor:hover{
 	margin-top: 5%;
 }
 
+.mt-2{
+	margin-top: 2%;
+}
+
 .custom-text-style {
 	font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 	font-size: 1.5rem;
@@ -106,7 +110,7 @@ h1.h2 {
 
 .projects-thumb {
 	max-width: 100%;
-	max-height: 40%;
+	max-height: 100%;
 }
 
 img {
@@ -128,4 +132,21 @@ img:hover{
 .zoom:hover {
     transform: scale(1.05); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
  
+}
+
+.list-unstyled{
+	font-size: 1.25rem;
+}
+
+.w-10 {
+  width: 10% !important;
+}
+
+.w-55 {
+  width: 55% !important;
+}
+
+.sub-body{
+	padding-left: 3rem;
+	padding-right: 3rem;
 }
