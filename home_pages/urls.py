@@ -27,4 +27,5 @@ urlpatterns = [
     url(r'^projects/$', homepage_views.projects_view, name="projects_page"),
     url(r'^projects-mobile/$', homepage_views.projects_m_view, name="projects_page-mobile"),
     url(r'^projects/toronto_sky/$', homepage_views.toronto_sky_view, name="toronto_sky_page"),
+    url(r'^projects/toronto_sky-mobile/$', homepage_views.toronto_sky_m_view, name="toronto_sky_page-mobile"),
 ]

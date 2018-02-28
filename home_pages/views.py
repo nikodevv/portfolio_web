@@ -32,3 +32,5 @@ def projects_m_view(request):
 def toronto_sky_view(request):
 	return render(request, 'toronto_sky.html', {'current_page': 'Projects'})
 
+def toronto_sky_m_view(request):
+	return render(request, 'toronto_sky-mobile.html', {'current_page': 'Projects'})
