@@ -2,8 +2,7 @@
 {% block title %}Niko Oshinov - Home{% endblock %}
 {% block bodyblock %} 
 	<div class="d-flex flex-row justify-content-center">
-		<div class="w-25"></div>
-		<div class="w-35" id="body_text">
+		<div class="w-55" id="body_text">
 			<p class="mt-5 text-center custom-text-style">
 				Hey there, <br>
 				My name is Niko Oshinov and I am a former financial analyst.<br>
@@ -15,12 +14,12 @@
 				I created this website to showcase my projects as I continue on my journey to becoming a better developer.
 			</p>
 		</div>
-		<div class="w-25"></div>
 	</div>
 {% endblock %}
 
 {% block jscode %}
 	<script>
-		$("#body_text").width($("#navigation_bar").width()) //found #navigation_bar is in base.html
+		var width = document.getElementById('navigation_bar').offsetWidth;
+		document.getElementById('body_text').style.width = width +'px';
 	</script>
 {% endblock %}

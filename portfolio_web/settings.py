@@ -27,12 +27,12 @@ PROJECT_ROOT = os.path.abspath(os.path.dirname(__name__))
 if 'DJANGO_DEBUG_FALSE' in os.environ:
     DEBUG = False
     SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
-    ALLOWED_HOSTS = ["nikodev.ca", "www.nikodev.ca"]
+    ALLOWED_HOSTS = ["nikodev.ca", "www.nikodev.ca","192.168.0.11"]
 
 else:
     DEBUG = True
     SECRET_KEY = 'u%z!9&nes^*&kfuxl#%na#*sse2vlc-%2ud^q@)z()8orce-n1'
-    ALLOWED_HOSTS = []
+    ALLOWED_HOSTS = ['*']
 
 # Application definition
 
