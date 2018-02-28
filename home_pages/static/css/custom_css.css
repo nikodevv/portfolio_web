@@ -43,6 +43,7 @@
   background-color: #292b2c !important;
 }
 
+
 /* temporary */
 .custom-nav-link {
 	display: block;
@@ -58,6 +59,18 @@
 	padding-right: 1rem;
 }
 
+.mobile-nav-link, .mobile-nav-link:link{
+	display: block;
+	/* bootstrap's font-family preference */
+	font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+	font-size: 1.5rem;
+	list-style: none;
+	color: #8cc1ff;
+  padding-top: 0.25rem; /* bootstrap's navbar-brand top margin is .25rem (used to center) */
+	padding-bottom: 0.5rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+}
 /* used in styling of links, including in navbar*/
 a.no-text-decor{
 	text-decoration: none;
@@ -73,7 +86,6 @@ a.no-text-decor:hover{
   border-bottom: 3px solid  #8cc1ff;
   padding-bottom: 3px;
 }
-
 .navbar-offset-box{
 	height: inherit;
 	width: 10%;

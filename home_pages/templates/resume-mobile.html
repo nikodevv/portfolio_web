@@ -1,0 +1,16 @@
+{% extends 'base-mobile.html' %}
+{% block title %}Resume{% endblock %}
+{% block bodyblock %} 
+	<div class="pr-2 pl-2" id="body_text">
+		<p class="custom-text-style">
+			My resume is readily available upon <a href="mailto:nick.oshinov@gmail.com">request</a>.
+		</p>
+	</div>
+{% endblock %}
+
+{% block jscode %}
+	<script>
+		$
+		$("#body_text").width($("#navigation_bar").width()) //found #navigation_bar is in base.html
+	</script>
+{% endblock %}

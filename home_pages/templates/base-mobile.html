@@ -1,0 +1,56 @@
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The 3 metatags above must come above any other meta tags for bootstrap purposes -->
+    <title>{% block title %}{% endblock %}</title>
+
+    <!-- Bootstrap -->
+    <!--Popper is necessary for button nav-->
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+    <link href="/static/css/bootstrap.css" rel="stylesheet">
+    <link href="/static/css/custom_css.css" rel="stylesheet">
+    {% block additional_css_imports %}{% endblock %}
+  </head>
+
+  <header>
+  		<!--navigation bar start-->
+  		<div class="navbar-inverse bg-inverse">
+
+		        <!--<div class=navbar-offset-box></div>-->
+		        <div class="w-100">
+	          		<div class="navbar-inverse">
+						<a class="navbar-brand collapse" href='#collapseNav' id="dropdownMenuButton" data-toggle="collapse" aria-expanded="false" aria-controls="collapseNav">
+							nikodev.ca ▽
+						</a> 
+
+						<div class="collapse" id="collapseNav">
+				        	<a class="mobile-nav-link" href='/' class="no-text-decor">Home</a>
+				        	<a class="mobile-nav-link" href='/projects/' class="no-text-decor">Projects</a>
+				        	<a class="mobile-nav-link" href='/contact/' class="no-text-decor">Contact</a>
+				        	<a class="mobile-nav-link" href='/resume/' class="no-text-decor">Resume</a>
+				        	<a class="mobile-nav-link" href="https://www.linkedin.com/in/niko-oshinov-358186a0/" class="no-text-decor">LinkedIn</a>
+				        	<a class="mobile-nav-link" href="https://github.com/nikodevv" class="no-text-decor">GitHub</a>
+				        </div>
+					</div>
+		    	</div>
+		</div>
+		<!--navigation bar end-->
+	</header>
+
+  	<body>
+  		{% block bodyblock %}{% endblock %}
+  		
+   	</body>
+</html>
+
+
+
+<script>
+	$("li:contains('{{current_page}}')").addClass("selected");
+</script>
+	{% block jscode %}{% endblock%}
