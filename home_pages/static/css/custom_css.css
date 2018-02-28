@@ -4,7 +4,7 @@
 
 
 /* Makes the navbar horizontal as opposed to vertical */
-.navbar.navbar-inverse.bg-inverse{
+.navbar-inverse.bg-inverse{
 	display: flex;
 	flex-direction: row;
 	padding-bottom: 0.1rem;
