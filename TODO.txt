@@ -1,0 +1,1 @@
+Write regression test to check links and paragraphs are identical on mobile and non-mobile templates.
