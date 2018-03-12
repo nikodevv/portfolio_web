@@ -2,7 +2,7 @@ import dota2api
 import json
 from stats import models # might cause issues
 from django.db import models
-from stats.models import Tournament, Sides, Match
+from stats.models import Tournament, Match
 
 class Controller:
 	START_ID = 17411 # using itemdef not id
@@ -52,13 +52,13 @@ class TournamentManager(models.Manager):
 		return entry
 
 class GameManager(models.Manager):
-	def create(self, match, win_r, rad_teamid, dire_teamid, hero_ids, player_ids):
-		self.create_match(match, win_r, rad_teamid, dire_teamid, hero_ids, player_ids)
+	def create(self, tournament, match, win_r, rad_teamid, dire_teamid, hero_ids, player_ids):
+		self.create_match(tournament, match, win_r, rad_teamid, dire_teamid, hero_ids, player_ids)
 
 	@staticmethod
 	def create_match(tournament, match_id, win_r, rad_teamid, dire_teamid, hero_ids, player_ids):
 		entry = Match()
-		entry.match_id = match_id
+		entry.mid = match_id
 		entry.win_radiant = win_r
 		entry.rad_teamid = rad_teamid
 		entry.dire_teamid = dire_teamid
@@ -85,35 +85,3 @@ class GameManager(models.Manager):
 		entry.dire4_playerid = player_ids[8]
 		entry.dire5_playerid = player_ids[9]
 		entry.save()
-
-# so now i want to get data not found in match_history and pass it to process
-
-# Foreign Keys
-	## match = models.ForeignKey(Match)
-	## # Game attributes
-	## win_radiant = models.BooleanField(default=True)
-	# # Team specific attributes
-	## rad_teamid = models.DecimalField(max_digits=3, decimal_places=0)
-	## dire_teamid = models.DecimalField(max_digits=3, decimal_places=0)
-	## rad1_heroid = models.DecimalField(max_digits=3, decimal_places=0)
-	### rad2_heroid = models.DecimalField(max_digits=3, decimal_places=0)
-	# rad3_heroid = models.DecimalField(max_digits=3, decimal_places=0)
-	# rad4_heroid = models.DecimalField(max_digits=3, decimal_places=0)
-	# rad5_heroid = models.DecimalField(max_digits=3, decimal_places=0)
-	# rad1_playerid = models.DecimalField(max_digits=4, decimal_places=0)
-	# rad2_playerid = models.DecimalField(max_digits=4, decimal_places=0)
-	# rad3_playerid = models.DecimalField(max_digits=4, decimal_places=0)
-	# rad4_playerid = models.DecimalField(max_digits=4, decimal_places=0)
-	# rad5_playerid = models.DecimalField(max_digits=4, decimal_places=0)
-	
-	# # Enemy specifc attirbutes
-	# dire1_heroid = models.DecimalField(max_digits=3, decimal_places=0)
-	# dire2_heroid = models.DecimalField(max_digits=3, decimal_places=0)
-	# dire3_heroid = models.DecimalField(max_digits=3, decimal_places=0)
-	# dire4_heroid = models.DecimalField(max_digits=3, decimal_places=0)
-	# dire5_heroid = models.DecimalField(max_digits=3, decimal_places=0)
-	# dire1_playerid = models.DecimalField(max_digits=4, decimal_places=0)
-	# dire2_playerid = models.DecimalField(max_digits=4, decimal_places=0)
-	# dire3_playerid = models.DecimalField(max_digits=4, decimal_places=0)
-	# dire4_playerid = models.DecimalField(max_digits=4, decimal_places=0)
-	# dire5_playerid = models.DecimalField(max_digits=4, decimal_places=0)

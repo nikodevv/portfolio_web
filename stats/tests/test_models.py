@@ -21,7 +21,7 @@ class TestTournamentManager(DjangoTestCase):
 		tid = '1337'
 		tindex = '33'
 		tname = 'test Name One 1'
-		self.manager.create_tournament(tid=tid, tindex=tindex, tname=tname)
+		self.manager.create(tid=tid, tindex=tindex, tname=tname)
 		saved_tournaments = Tournament.objects.all()
 		self.assertEqual(saved_tournaments[0].tid, tid)
 		self.assertEqual(saved_tournaments[0].tindex, tindex)
@@ -32,19 +32,19 @@ class TestGameManager(DjangoTestCase):
 		self.manager = GameManager()
 
 	def test_creates_matches(self):
-		tournament = TournamentManager.create_tournament(tid='9999', 
+		tournament = TournamentManager.create(tid='9999', 
 			tindex='5546', tname='tournament')
-		match_id = '1'
+		mid = '1'
 		win_radiant = True
 		rad_teamid = '3000'
 		dire_teamid = '4000'
-		player_ids = ['111', '222', '333', '444', '555', '666', '777', '999', '000']
 		hero_ids = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
-		self.manager.create(tournament, match_id, win_radiant, rad_teamid, dire_teamid, 
-			hero_ids, player_ids)
+		player_ids = ['111', '222', '333', '444', '555', '666', '777', '999', '000','3']
+		self.manager.create(tournament, mid, win_radiant, rad_teamid, 
+			dire_teamid, hero_ids, player_ids)
 		saved_matches = Match.objects.all()
-		self.assertEqual(saved_matches[0].match_id, match_id)
-		self.assertEqual(saved_matches[0].win_r, win_radiant)
+		self.assertEqual(saved_matches[0].mid, mid)
+		self.assertEqual(saved_matches[0].win_radiant, win_radiant)
 		self.assertEqual(saved_matches[0].rad_teamid, rad_teamid)
 		self.assertEqual(saved_matches[0].rad3_playerid, player_ids[2])
 		self.assertEqual(saved_matches[0].dire1_playerid, player_ids[5])
