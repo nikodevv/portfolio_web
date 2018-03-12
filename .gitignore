@@ -1,2 +1,3 @@
 *.pyc
+*.uxf
 /static/SSL_cert.txt
