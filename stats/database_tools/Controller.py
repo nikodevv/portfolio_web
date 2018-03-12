@@ -11,7 +11,7 @@ class Controller:
 	"""
 	START_ID = 17411 # using itemdef not id
 	END_ID = 25000 # using itemdef not id
-	
+
 	def __init__(self, API_KEY):
 		self.api = dota2api.Initialise(API_KEY)
 		self.processor = Processor(Controller.START_ID, Controller.END_ID)
@@ -39,13 +39,14 @@ class Processor:
 	def __init__(self, start, end):
 		self.t_manager = TournamentManager()
 		self.g_manager = GameManager()
-		self.START_ID = start
-		self.END_ID = end
+		self.START= start
+		self.END = end
 
-	def create_tournaments(tournament_data):
+	def create_tournaments(self, tournament_data):
 		tournaments = []
 		for data in tournament_data:
-			self.t_manager.create(self._filter_tdata(data))
+			if data['itemdef'] >= self.START and data['itemdef'] <= self.END:
+				self.t_manager.create(*self._filter_tdata(data))
 
 	@staticmethod
 	def _filter_tdata(data):

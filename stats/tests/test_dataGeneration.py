@@ -3,6 +3,7 @@ import os, sys
 import dota2api
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from stats.database_tools.Controller import Controller, Processor 
+from stats.models import Tournament
 
 API_KEY = '93E37410337F61C24E4C2496BFB68DE0'
 
@@ -22,7 +23,8 @@ class TestController(PythonTestCase):
 
 class TestProcessor(PythonTestCase):
 	def setUp(self):
-		self.processor = Processor(17411, 25000)
+		START = 17411
+		self.processor = Processor(START, 25000)
 
 	def test_tournament_filter(self):
 		data = {'name': 'one_name', 'randomename': 'randomVar', 'itemdef':3, 'leagueid':30}
@@ -30,3 +32,17 @@ class TestProcessor(PythonTestCase):
 		self.assertEqual(arg1, data['leagueid'])
 		self.assertEqual(arg2, data['itemdef'])
 		self.assertEqual(arg3, data['name'][:20])
+
+	def test_tournament_creation(self):
+		data1 = {'name': 'First Name', 'randomename': 'randomVar', 'itemdef':18000, 'leagueid':30}
+		# itemdef > the START specified value in setUp(), so data2 should not stored in db
+		data2 = {'name': 'Second Name', 'randomename': 'randomVar2', 'itemdef':17000, 'leagueid':34}
+		data3 = {'name': 'Second Name', 'randomename': 'randomVar2', 'itemdef':19000, 'leagueid':34}
+		data = [data1, data2, data3]
+		self.processor.create_tournaments(data)
+		tournaments = Tournament.objects.all()
+		# creates only 2 tournaments
+		self.assertEqual(len(tournaments), 2)
+		# tournament 1 is the frsit tournament
+		self.assertEqual(tournaments[0].tid,  '30')
+		self.assertEqual(tournaments[1].tindex, '19000')
