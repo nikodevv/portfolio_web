@@ -18,7 +18,12 @@ class Controller:
 
 	def create_tournaments(self):
 		"""Collects data from valve API and passes it to processor"""
-		self.processor.create_tournaments(self.get_tournaments(START_ID, END_ID), BasicAPI())
+		# Stores tournament data and stores list of tournament ids
+		self.tournament_ids = self.processor.create_tournaments(
+			self.get_tournaments(START_ID, END_ID))
+
+	def create_matches(self):
+		self.api
 
 	def get_tournaments(self, start, end):
 		return self.api.get_league_listing()['leagues']
@@ -39,13 +44,17 @@ class Processor:
 	def create_tournaments(self, tournament_data):
 		tournament_ids = []
 		for data in tournament_data:
-			if data['itemdef'] >= self.START and data['itemdef'] <= self.END:
+			if int(data['itemdef']) >= self.START and int(data['itemdef']) <= self.END:
 				tournament_ids.append(self.t_manager.create(*self._filter_tdata(data)).tid)
 		return tournament_ids
-		
+
 	@staticmethod
 	def _filter_tdata(data):
 		return data['leagueid'], data['itemdef'], data['name']
+
+	@staticmethod 
+	def get_match_ids_from_api_call(data):
+		return [match['match_id'] for match in data['matches']]
 
 class TournamentManager(models.Manager):
 	@staticmethod
