@@ -21,16 +21,10 @@ class Controller:
 		self.processor.create_tournaments(self.get_tournaments(START_ID, END_ID), BasicAPI())
 
 	def get_tournaments(self, start, end):
-		"""calls api to find necessary tournaments"""
-		# for tourmnt in leagues:
-		# 	self.processor.create_tournament()
-			#if (tourmnt['itemdef'] <= end) and (tourmnt['itemdef'] >= start):
-
 		return self.api.get_league_listing()['leagues']
 
-
 	def get_match_details(self, match_id):
-		#self.api.
+		self.api.get_match_history
 		pass
 
 class Processor:
@@ -43,11 +37,12 @@ class Processor:
 		self.END = end
 
 	def create_tournaments(self, tournament_data):
-		tournaments = []
+		tournament_ids = []
 		for data in tournament_data:
 			if data['itemdef'] >= self.START and data['itemdef'] <= self.END:
-				self.t_manager.create(*self._filter_tdata(data))
-
+				tournament_ids.append(self.t_manager.create(*self._filter_tdata(data)).tid)
+		return tournament_ids
+		
 	@staticmethod
 	def _filter_tdata(data):
 		return data['leagueid'], data['itemdef'], data['name']

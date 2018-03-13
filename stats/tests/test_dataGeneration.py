@@ -46,3 +46,13 @@ class TestProcessor(PythonTestCase):
 		# tournament 1 is the frsit tournament
 		self.assertEqual(tournaments[0].tid,  '30')
 		self.assertEqual(tournaments[1].tindex, '19000')
+
+	def test_tournament_creation_also_returns_tournament_ids_of_created_objects(self):
+		data1 = {'name': 'First Name', 'randomename': 'randomVar', 'itemdef':18000, 'leagueid':30}
+		# itemdef > the START specified value in setUp(), so data2 should not stored in db
+		data2 = {'name': 'Second Name', 'randomename': 'randomVar2', 'itemdef':17000, 'leagueid':34}
+		data3 = {'name': 'Second Name', 'randomename': 'randomVar2', 'itemdef':19000, 'leagueid':34}
+		data = [data1, data2, data3]
+		tournament_ids = self.processor.create_tournaments(data)
+		self.assertIsInstance(tournament_ids, list)
+		self.assertEqual(tournament_ids, [data1['leagueid'], data3['leagueid']])

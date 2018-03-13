@@ -27,6 +27,13 @@ class TestTournamentManager(DjangoTestCase):
 		self.assertEqual(saved_tournaments[0].tindex, tindex)
 		self.assertEqual(saved_tournaments[0].tname, tname)
 
+	def test_returns_tournament_on_create(self):
+		tid = '1337'
+		tindex = '33'
+		tname = 'test Name One 1'
+		returnval = self.manager.create(tid=tid, tindex=tindex, tname=tname)
+		self.assertIsInstance(returnval, Tournament)
+
 class TestGameManager(DjangoTestCase):
 	def setUp(self):
 		self.manager = GameManager()
