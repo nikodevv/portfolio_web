@@ -23,14 +23,19 @@ class Controller:
 			self.get_tournaments(START_ID, END_ID))
 
 	def create_matches(self):
-		self.api
+		match_ids = []
+		for id_ in self.tournament_ids:
+			match_ids.append(self.processor.get_match_ids_from_api_call(
+				self.api.get_match_history(league=id_)))
+		# Now make it call function that stores match details through processor
+		for id_ in match_ids:
+			self.processor.create_game(self.get_match_details(id_))
 
 	def get_tournaments(self, start, end):
 		return self.api.get_league_listing()['leagues']
 
 	def get_match_details(self, match_id):
-		self.api.get_match_history
-		pass
+		return self.api.get_match_history(match_id)
 
 class Processor:
 	""" A data processing layer that takes large dictonaries, and filters 
@@ -48,6 +53,20 @@ class Processor:
 				tournament_ids.append(self.t_manager.create(*self._filter_tdata(data)).tid)
 		return tournament_ids
 
+	def create_game(self, mdata):
+		## MISSING TEST ##
+		tournament_id = mdata['leagueid']
+		match_id = mdata['match_id']
+		win_r = mdata['radiant_win'] # True if radiant won
+		
+		# team_name has to be mapped to team_id somehow or model changed
+		rad_teamid = mdata['radiant_team']['team_name'] 
+		dire_teamid = mdata['dire_team']['team_name']
+		players = get_players(mdata['players'])
+		heroes = get_heroes(mdata['players'])
+		self.g_manager.create(tournament_id, match_id, win_r, rad_teamid, 
+			dire_teamid, heroes, players)
+
 	@staticmethod
 	def _filter_tdata(data):
 		return data['leagueid'], data['itemdef'], data['name']
@@ -55,6 +74,16 @@ class Processor:
 	@staticmethod 
 	def get_match_ids_from_api_call(data):
 		return [match['match_id'] for match in data['matches']]
+
+	@staticmethod
+	def get_heroes(player_data):
+		# Can get items by [player['item_3'] for player in player_data]
+		# ^ i.e. thats for itemslot 3
+		return [player['hero_id'] for player in player_data]
+
+	@staticmethod 
+	def get_players(player_data):
+		return [player['account_id'] for player in player_data]
 
 class TournamentManager(models.Manager):
 	@staticmethod
@@ -67,8 +96,9 @@ class TournamentManager(models.Manager):
 		return entry
 
 class GameManager(models.Manager):
-	def create(self, tournament, match, win_r, rad_teamid, dire_teamid, 
+	def create(self, tournament_id, match, win_r, rad_teamid, dire_teamid, 
 		hero_ids, player_ids):
+
 		self.create_match(tournament, match, win_r, rad_teamid, dire_teamid, 
 			hero_ids, player_ids)
 
