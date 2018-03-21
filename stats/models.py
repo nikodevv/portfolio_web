@@ -20,8 +20,8 @@ class Match(models.Model):
 	mlength = models.CharField(max_length=10) # match length
 	win_radiant = models.BooleanField(default=True)
 	# Team specific attributes
-	rad_teamid = models.CharField(max_length=10, default='novalue')
-	dire_teamid = models.CharField(max_length=10, default='novalue')
+	rad_teamid = models.CharField(max_length=30, default='novalue')
+	dire_teamid = models.CharField(max_length=30, default='novalue')
 	rad1_heroid = models.CharField(max_length=10, default='novalue')
 	rad2_heroid = models.CharField(max_length=10, default='novalue')
 	rad3_heroid = models.CharField(max_length=10, default='novalue')

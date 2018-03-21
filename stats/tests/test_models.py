@@ -66,6 +66,8 @@ class TestGameManager(DjangoTestCase):
 			tindex='5546', tname='tournament')
 		mid = '1'
 		win_radiant = True
+		# Using numbers as strings but techincally
+		# team ids are stored as strings of team names, not numbers
 		rad_teamid = '3000'
 		dire_teamid = '4000'
 		hero_ids = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']

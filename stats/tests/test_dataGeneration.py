@@ -4,6 +4,7 @@ import dota2api
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from stats.database_tools.Controller import Controller, Processor 
 from stats.models import Tournament
+import mock
 
 API_KEY = '93E37410337F61C24E4C2496BFB68DE0'
 
@@ -85,3 +86,15 @@ class TestProcessor(PythonTestCase, TestData):
 		data = self.get_match_history()
 		match_ids = self.processor.get_match_ids_from_api_call(data)
 		self.assertEqual(match_ids, [x['match_id'] for x in data['matches']])
+
+	def test_create_game_method_calls_model_manager_equivalent(self):
+		# tournament_id = mdata['leagueid']
+		# match_id = mdata['match_id']
+		# win_r = mdata['radiant_win'] # True if radiant won
+		
+		# # team_name has to be mapped to team_id somehow or model changed
+		# rad_teamid = mdata['radiant_team']['team_name'] 
+		# dire_teamid = mdata['dire_team']['team_name']
+		# players = get_players(mdata['players'])
+		# heroes = get_heroes(mdata['players'])
+		pass

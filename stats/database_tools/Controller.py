@@ -64,6 +64,7 @@ class Processor:
 		dire_teamid = mdata['dire_team']['team_name']
 		players = get_players(mdata['players'])
 		heroes = get_heroes(mdata['players'])
+		#### should make sure 
 		self.g_manager.create(tournament_id, match_id, win_r, rad_teamid, 
 			dire_teamid, heroes, players)
 
@@ -98,8 +99,7 @@ class TournamentManager(models.Manager):
 class GameManager(models.Manager):
 	def create(self, tournament_id, match, win_r, rad_teamid, dire_teamid, 
 		hero_ids, player_ids):
-
-		self.create_match(tournament, match, win_r, rad_teamid, dire_teamid, 
+		self.create_match(tournament_id, match, win_r, rad_teamid, dire_teamid, 
 			hero_ids, player_ids)
 
 	@staticmethod
