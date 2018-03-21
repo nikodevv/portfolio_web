@@ -1,6 +1,5 @@
 from unittest import TestCase as PythonTestCase
 from unittest.mock import patch 
-import os, sys
 import dota2api
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from stats.database_tools.Controller import Controller, Processor, GameManager
