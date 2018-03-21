@@ -62,8 +62,8 @@ class Processor:
 		# team_name has to be mapped to team_id somehow or model changed
 		rad_teamid = mdata['radiant_team']['team_name'] 
 		dire_teamid = mdata['dire_team']['team_name']
-		players = get_players(mdata['players'])
-		heroes = get_heroes(mdata['players'])
+		players = self.get_players(mdata['players'])
+		heroes = self.get_heroes(mdata['players'])
 		#### should make sure 
 		self.g_manager.create(tournament_id, match_id, win_r, rad_teamid, 
 			dire_teamid, heroes, players)

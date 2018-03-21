@@ -1,10 +1,10 @@
 from unittest import TestCase as PythonTestCase
+from unittest.mock import patch 
 import os, sys
 import dota2api
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from stats.database_tools.Controller import Controller, Processor 
+from stats.database_tools.Controller import Controller, Processor, GameManager
 from stats.models import Tournament
-import mock
 
 API_KEY = '93E37410337F61C24E4C2496BFB68DE0'
 
@@ -38,6 +38,22 @@ class TestData:
 	@staticmethod
 	def get_match2():
 		return ({'series_id': 1, 'match_id': '77','several_other_keys': 'whatever'})
+	
+	@staticmethod
+	def create_match_details_data():
+		t1 = {'team_name':'Evil Geniuses'}
+		t2 = {'team_name':'VGJ'}
+		players = TestData.create_10_players()
+		return {'leagueid': '3', 'match_id': '10', 'radiant_win': True, 'radiant_team': t1,
+		'dire_team':t2, 'players': players}
+
+	@staticmethod
+	def create_player_instance(account_number, hero_id):
+		return {'account_id': account_number, 'hero_id':hero_id}
+
+	@staticmethod
+	def create_10_players():
+		return [TestData.create_player_instance(str(x), str(2*x)) for x in range(1, 10)]
 
 class TestController(PythonTestCase):
 	def setUp(self):
@@ -87,14 +103,27 @@ class TestProcessor(PythonTestCase, TestData):
 		match_ids = self.processor.get_match_ids_from_api_call(data)
 		self.assertEqual(match_ids, [x['match_id'] for x in data['matches']])
 
+	# Processor().create_game(...) should call GameManager.create()
+	# The test checks to see if the data is passed to GameManager and if it 
+	# is passed in the right order
+	# The patch statement replaces the GameManager object name, allowing for
+	# to check if a method was called without overwriting it.
 	def test_create_game_method_calls_model_manager_equivalent(self):
-		# tournament_id = mdata['leagueid']
-		# match_id = mdata['match_id']
-		# win_r = mdata['radiant_win'] # True if radiant won
-		
-		# # team_name has to be mapped to team_id somehow or model changed
-		# rad_teamid = mdata['radiant_team']['team_name'] 
-		# dire_teamid = mdata['dire_team']['team_name']
-		# players = get_players(mdata['players'])
-		# heroes = get_heroes(mdata['players'])
-		pass
+		mdata = TestData.create_match_details_data()
+		heroes_data = Processor.get_heroes(mdata['players'])
+		players_data = Processor.get_players(mdata['players'])
+		with patch.object(self.processor.g_manager, 'create') as mock:
+			self.processor.create_game(mdata)
+			mock.assert_called_with(mdata['leagueid'], mdata['match_id'], 
+				mdata['radiant_win'], mdata['radiant_team']['team_name'], 
+				mdata['dire_team']['team_name'], heroes_data, players_data)
+
+	def test_get_players(self):
+		players_data = TestData.create_10_players()
+		self.assertEqual(self.processor.get_players(players_data), 
+			[player['account_id'] for player in players_data])
+
+	def test_get_heroes(self):
+		heroes = TestData.create_10_players()
+		self.assertEqual(self.processor.get_heroes(heroes), 
+			[player['hero_id'] for player in heroes])
