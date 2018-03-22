@@ -6,38 +6,42 @@ sys.path.append(dirname(dirname(dirname(abspath(__file__)))))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "portfolio_web.settings")
 django.setup()
 from stats.models import Tournament, Match
+from django.db import models
 
 class Controller:
 	"""
 	Makes API calls and dispatches information to be Processed
 	"""
-	START_ID = 17411 # using itemdef not id
-	END_ID = 25000 # using itemdef not id
 
 	def __init__(self, API_KEY):
+		self.START_ID = 17420 # using itemdef not id
+		self.END_ID = 17450 # using itemdef not id
 		self.api = dota2api.Initialise(API_KEY)
-		self.processor = Processor(Controller.START_ID, Controller.END_ID)
+		self.processor = Processor(self.START_ID, self.END_ID)
+		self.create_tournaments()
+		self.create_matches()
 
 	def create_tournaments(self):
 		"""Collects data from valve API and passes it to processor"""
 		# Stores tournament data and stores list of tournament ids
 		self.tournament_ids = self.processor.create_tournaments(
-			self.get_tournaments(START_ID, END_ID))
+			self.get_tournaments(self.START_ID, self.END_ID))
 
 	def create_matches(self):
 		match_ids = []
 		for id_ in self.tournament_ids:
-			match_ids.append(self.processor.get_match_ids_from_api_call(
+			match_ids = match_ids + (self.processor.get_match_ids_from_api_call(
 				self.api.get_match_history(league=id_)))
 		# Now make it call function that stores match details through processor
 		for id_ in match_ids:
+			print(self.get_match_details(match_id=id_))
 			self.processor.create_game(self.get_match_details(id_))
 
 	def get_tournaments(self, start, end):
 		return self.api.get_league_listing()['leagues']
 
 	def get_match_details(self, match_id):
-		return self.api.get_match_history(match_id)
+		return self.api.get_match_details(match_id=match_id)
 
 class Processor:
 	""" A data processing layer that takes large dictonaries, and filters 
@@ -52,6 +56,7 @@ class Processor:
 		tournament_ids = []
 		for data in tournament_data:
 			if int(data['itemdef']) >= self.START and int(data['itemdef']) <= self.END:
+				print
 				tournament_ids.append(self.t_manager.create(*self._filter_tdata(data)).tid)
 		return tournament_ids
 
@@ -60,6 +65,10 @@ class Processor:
 		takes a matchdetails dota2api call and dispatches relevant info to
 		models manager
 		"""
+		# gmae_type == 8 corresponds to captains mode
+		if int(mdata['game_mode']) != int(2):
+			return None
+		raise Exception
 		tournament_id = mdata['leagueid']
 		match_id = mdata['match_id']
 		win_r = mdata['radiant_win'] # True if radiant won
@@ -88,17 +97,31 @@ class Processor:
 	def get_players(player_data):
 		return [player['account_id'] for player in player_data]
 
-class TournamentManager(models.Manager):
-	@staticmethod
-	def create(tid, tindex, tname):
+
+class FieldValidator:
+	def get_field_data(self, data):
+		"""
+		takes a string and returns one 
+		of the appropriate length
+		"""
+		data = str(data)
+		if len(data) >= 255:
+			return data[:255]
+		return data
+
+class TournamentManager(models.Manager, FieldValidator):
+	def create(self, tid, tindex, tname):
 		entry = Tournament()
 		entry.tid = tid
-		entry.tindex = tindex
-		entry.tname = tname
+		# tindex can be larger than required
+		entry.tindex = self.get_field_data(tindex)
+		entry.tname = self.get_field_data(tname)
 		entry.save()
 		return entry
+	
+	
 
-class GameManager(models.Manager):
+class GameManager(models.Manager, FieldValidator):
 	def create(self, tournament_id, match, win_r, rad_teamid, dire_teamid, 
 		hero_ids, player_ids):
 		self.create_match(tournament_id, match, win_r, rad_teamid, dire_teamid, 
@@ -108,7 +131,7 @@ class GameManager(models.Manager):
 	def create_match(tournament, match_id, win_r, rad_teamid, dire_teamid, 
 		hero_ids, player_ids):
 		entry = Match()
-		entry.mid = match_id
+		entry.mid = self.get_field_data(match_id)
 		entry.win_radiant = win_r
 		entry.rad_teamid = rad_teamid
 		entry.dire_teamid = dire_teamid
@@ -135,5 +158,7 @@ class GameManager(models.Manager):
 		entry.dire4_playerid = player_ids[8]
 		entry.dire5_playerid = player_ids[9]
 		entry.save()
+
+
 API_KEY = '93E37410337F61C24E4C2496BFB68DE0'
 models_creator = Controller(API_KEY)

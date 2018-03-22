@@ -6,9 +6,9 @@ class Tournament(models.Model):
 	""" 
 	Class representing a pro tournament metadata
 	"""
-	tid = models.CharField(max_length=10, default='novalue')
-	tindex = models.CharField(max_length=10, default='novalue')
-	tname = models.CharField(max_length=30, default='novalue')
+	tid = models.CharField(max_length=255, default='novalue')
+	tindex = models.CharField(max_length=255, default='novalue')
+	tname = models.CharField(max_length=255, default='novalue')
 
 	
 class Match(models.Model):
@@ -16,12 +16,12 @@ class Match(models.Model):
 	# Foreign Keys
 	tournament = models.ForeignKey(Tournament, null=False, blank=True)
 	# Game attributes
-	mid = models.CharField(primary_key=True, max_length=10) # match id
-	mlength = models.CharField(max_length=10) # match length
+	mid = models.CharField(primary_key=True, max_length=255) # match id
+	mlength = models.CharField(max_length=255) # match length
 	win_radiant = models.BooleanField(default=True)
 	# Team specific attributes
-	rad_teamid = models.CharField(max_length=30, default='novalue')
-	dire_teamid = models.CharField(max_length=30, default='novalue')
+	rad_teamid = models.CharField(max_length=255, default='novalue')
+	dire_teamid = models.CharField(max_length=255, default='novalue')
 	rad1_heroid = models.CharField(max_length=10, default='novalue')
 	rad2_heroid = models.CharField(max_length=10, default='novalue')
 	rad3_heroid = models.CharField(max_length=10, default='novalue')
