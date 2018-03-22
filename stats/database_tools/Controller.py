@@ -1,9 +1,11 @@
 import dota2api
-import json
-from stats import models # might cause issues
-from django.db import models
+import sys, django
+from os.path import dirname, abspath
+import os
+sys.path.append(dirname(dirname(dirname(abspath(__file__)))))
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "portfolio_web.settings")
+django.setup()
 from stats.models import Tournament, Match
-
 
 class Controller:
 	"""
@@ -54,17 +56,17 @@ class Processor:
 		return tournament_ids
 
 	def create_game(self, mdata):
-		## MISSING TEST ##
+		"""
+		takes a matchdetails dota2api call and dispatches relevant info to
+		models manager
+		"""
 		tournament_id = mdata['leagueid']
 		match_id = mdata['match_id']
 		win_r = mdata['radiant_win'] # True if radiant won
-		
-		# team_name has to be mapped to team_id somehow or model changed
 		rad_teamid = mdata['radiant_team']['team_name'] 
 		dire_teamid = mdata['dire_team']['team_name']
 		players = self.get_players(mdata['players'])
 		heroes = self.get_heroes(mdata['players'])
-		#### should make sure 
 		self.g_manager.create(tournament_id, match_id, win_r, rad_teamid, 
 			dire_teamid, heroes, players)
 
@@ -133,3 +135,5 @@ class GameManager(models.Manager):
 		entry.dire4_playerid = player_ids[8]
 		entry.dire5_playerid = player_ids[9]
 		entry.save()
+API_KEY = '93E37410337F61C24E4C2496BFB68DE0'
+models_creator = Controller(API_KEY)

@@ -14,7 +14,7 @@ class Tournament(models.Model):
 class Match(models.Model):
 	# ids are CharFields to prevent reading 003 as 3.
 	# Foreign Keys
-	tournament = models.ForeignKey(Tournament, null=True, blank=True)
+	tournament = models.ForeignKey(Tournament, null=False, blank=True)
 	# Game attributes
 	mid = models.CharField(primary_key=True, max_length=10) # match id
 	mlength = models.CharField(max_length=10) # match length
