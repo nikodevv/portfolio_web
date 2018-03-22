@@ -31,10 +31,9 @@ class Controller:
 		match_ids = []
 		for id_ in self.tournament_ids:
 			match_ids = match_ids + (self.processor.get_match_ids_from_api_call(
-				self.api.get_match_history(league=id_)))
-		# Now make it call function that stores match details through processor
+				self.api.get_match_history(league_id=id_)))
+		# call function that stores match details through processor
 		for id_ in match_ids:
-			print(self.get_match_details(match_id=id_))
 			self.processor.create_game(self.get_match_details(id_))
 
 	def get_tournaments(self, start, end):
@@ -56,7 +55,6 @@ class Processor:
 		tournament_ids = []
 		for data in tournament_data:
 			if int(data['itemdef']) >= self.START and int(data['itemdef']) <= self.END:
-				print
 				tournament_ids.append(self.t_manager.create(*self._filter_tdata(data)).tid)
 		return tournament_ids
 
@@ -68,12 +66,11 @@ class Processor:
 		# gmae_type == 8 corresponds to captains mode
 		if int(mdata['game_mode']) != int(2):
 			return None
-		raise Exception
 		tournament_id = mdata['leagueid']
 		match_id = mdata['match_id']
 		win_r = mdata['radiant_win'] # True if radiant won
-		rad_teamid = mdata['radiant_team']['team_name'] 
-		dire_teamid = mdata['dire_team']['team_name']
+		rad_teamid = mdata['radiant_team_id'] 
+		dire_teamid = mdata['dire_team_id']
 		players = self.get_players(mdata['players'])
 		heroes = self.get_heroes(mdata['players'])
 		self.g_manager.create(tournament_id, match_id, win_r, rad_teamid, 
@@ -127,8 +124,7 @@ class GameManager(models.Manager, FieldValidator):
 		self.create_match(tournament_id, match, win_r, rad_teamid, dire_teamid, 
 			hero_ids, player_ids)
 
-	@staticmethod
-	def create_match(tournament, match_id, win_r, rad_teamid, dire_teamid, 
+	def create_match(self,tournament, match_id, win_r, rad_teamid, dire_teamid, 
 		hero_ids, player_ids):
 		entry = Match()
 		entry.mid = self.get_field_data(match_id)
