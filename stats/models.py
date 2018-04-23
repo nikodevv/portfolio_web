@@ -6,7 +6,7 @@ class Tournament(models.Model):
 	""" 
 	Class representing a pro tournament metadata
 	"""
-	tid = models.CharField(max_length=255, default='novalue')
+	tid = models.CharField(max_length=255, primary_key=True, null=False)
 	tindex = models.CharField(max_length=255, default='novalue')
 	tname = models.CharField(max_length=255, default='novalue')
 
