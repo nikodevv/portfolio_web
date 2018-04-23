@@ -66,7 +66,7 @@ class Processor:
 		takes a matchdetails dota2api call and dispatches relevant info to
 		models manager
 		"""
-		# gmae_type == 8 corresponds to captains mode
+		# game_type == 8 corresponds to captains mode
 		if int(mdata['game_mode']) != int(2):
 			return None
 		tournament_id = mdata['leagueid']
@@ -136,12 +136,14 @@ class TournamentManager(models.Manager, FieldValidator):
 class GameManager(models.Manager, FieldValidator):
 	def create(self, tournament_id, match, win_r, rad_teamid, dire_teamid, 
 		hero_ids, player_ids):
-		self.create_match(tournament_id, match, win_r, rad_teamid, dire_teamid, 
+		tournament = self.get_tournament_by_id(tournament_id)
+		self.create_match(tournament, match, win_r, rad_teamid, dire_teamid, 
 			hero_ids, player_ids)
 
 	def create_match(self,tournament, match_id, win_r, rad_teamid, dire_teamid, 
 		hero_ids, player_ids):
 		entry = Match()
+		entry.tournament = tournament
 		entry.mid = self.get_field_data(match_id)
 		entry.win_radiant = win_r
 		entry.rad_teamid = rad_teamid
@@ -170,6 +172,8 @@ class GameManager(models.Manager, FieldValidator):
 		entry.dire5_playerid = player_ids[9]
 		entry.save()
 
+	def get_tournament_by_id(self, tournament_id):
+		return Tournament.objects.get(pk=tournament_id)
 
 API_KEY = '93E37410337F61C24E4C2496BFB68DE0'
 models_creator = Controller(API_KEY)
