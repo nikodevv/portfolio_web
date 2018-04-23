@@ -30,6 +30,7 @@ class Controller:
 	def create_matches(self):
 		match_ids = []
 		for id_ in self.tournament_ids:
+			# Add in a dictionary for this that holds tid: match_ids
 			match_ids = match_ids + (self.processor.get_match_ids_from_api_call(
 				self.api.get_match_history(league_id=id_)))
 		# call function that stores match details through processor
@@ -52,6 +53,8 @@ class Processor:
 		self.END = end
 
 	def create_tournaments(self, tournament_data):
+		"""Returns a list of tournament ids after creating corresponding
+		entries in the database"""
 		tournament_ids = []
 		for data in tournament_data:
 			if int(data['itemdef']) >= self.START and int(data['itemdef']) <= self.END:
@@ -67,6 +70,8 @@ class Processor:
 		if int(mdata['game_mode']) != int(2):
 			return None
 		tournament_id = mdata['leagueid']
+		self.validate_not_null(tournament_id)
+		
 		match_id = mdata['match_id']
 		win_r = mdata['radiant_win'] # True if radiant won
 		rad_teamid = mdata['radiant_team_id'] 
@@ -75,6 +80,15 @@ class Processor:
 		heroes = self.get_heroes(mdata['players'])
 		self.g_manager.create(tournament_id, match_id, win_r, rad_teamid, 
 			dire_teamid, heroes, players)
+	def validate_matchtype
+	def validate_not_null(data, dataname):
+		"""
+		Checks data is not null without relying on database level
+		validation
+		"""
+		if data == None:
+			assert(tournament_id is not None, "%s is null" % dataname)
+		pass
 
 	@staticmethod
 	def _filter_tdata(data):

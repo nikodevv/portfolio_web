@@ -126,3 +126,6 @@ class TestProcessor(PythonTestCase, TestData):
 		heroes = TestData.create_10_players()
 		self.assertEqual(self.processor.get_heroes(heroes), 
 			[player['hero_id'] for player in heroes])
+
+	def test_correct_game_mode_being_selected_by_create_game_fucntion(self):
+		self.fail("Make sure the game mode is the correct one!")
