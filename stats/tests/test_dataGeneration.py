@@ -149,6 +149,8 @@ class TestGameManager(DjangoTestCase):
 		# the value found by GameManager
 		val = self.g_manager.get_tournament_by_id(tournament_id)
 		self.assertEqual(entry, val)
-		
+
 	def test_sets_match_length(self):
 		self.fail("finish test, implement functionality")
+
+	

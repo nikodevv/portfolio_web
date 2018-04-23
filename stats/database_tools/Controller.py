@@ -74,9 +74,7 @@ class Processor:
 		
 		match_id = mdata['match_id']
 		win_r = mdata['radiant_win'] # True if radiant won
-		rad_teamid = mdata['radiant_team_id'] 
-		print(mdata['dire_team_id'])
-		dire_teamid = mdata['dire_team_id']
+		rad_teamid, dire_teamid = self.get_team_ids(mdata)
 		players = self.get_players(mdata['players'])
 		heroes = self.get_heroes(mdata['players'])
 		self.g_manager.create(tournament_id, match_id, win_r, rad_teamid, 
@@ -110,6 +108,22 @@ class Processor:
 	def get_players(player_data):
 		return [player['account_id'] for player in player_data]
 
+	@staticmethod
+	def get_team_ids(mdata):
+		"""
+		Finds or sets team ids from valve API match_detail call. 
+		"""
+		# Sometimes team_ids are not recorded. 
+		# i.e. the key 'radiant_team_id' is not in mdata.
+		# In such cases default values of 1 or 2 are assigned 
+		try:
+			radiant = mdata['radiant_team_id']
+		except:
+			radiant = "1"
+		try:
+			dire = mdata['dire_team_id']
+		except:
+			dire = "2"
 
 class FieldValidator:
 	def get_field_data(self, data):
