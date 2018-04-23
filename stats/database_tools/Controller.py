@@ -75,6 +75,7 @@ class Processor:
 		match_id = mdata['match_id']
 		win_r = mdata['radiant_win'] # True if radiant won
 		rad_teamid = mdata['radiant_team_id'] 
+		print(mdata['dire_team_id'])
 		dire_teamid = mdata['dire_team_id']
 		players = self.get_players(mdata['players'])
 		heroes = self.get_heroes(mdata['players'])
