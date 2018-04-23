@@ -70,7 +70,7 @@ class Processor:
 		if int(mdata['game_mode']) != int(2):
 			return None
 		tournament_id = mdata['leagueid']
-		self.validate_not_null(tournament_id)
+		self.validate_not_null(tournament_id, "tournament_id")
 		
 		match_id = mdata['match_id']
 		win_r = mdata['radiant_win'] # True if radiant won
@@ -81,14 +81,15 @@ class Processor:
 		self.g_manager.create(tournament_id, match_id, win_r, rad_teamid, 
 			dire_teamid, heroes, players)
 
+	@staticmethod
 	def validate_not_null(data, dataname):
 		"""
 		Checks data is not null without relying on database level
 		validation
 		"""
 		if data == None:
-			assert(data is not None, "%s is null" % dataname)
-		
+			raise Exception(data is not None, "%s is null" % dataname)
+		pass
 
 	@staticmethod
 	def _filter_tdata(data):
