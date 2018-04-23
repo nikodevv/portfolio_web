@@ -3,15 +3,6 @@ from stats.models import Tournament, Match
 from stats.database_tools.Controller import TournamentManager, GameManager
 # Create your tests here.
 
-class TestModels(DjangoTestCase):
-	def test_saves_tournaments(self):
-		pass
-	def test_saves_match(self):
-		pass
-	def test_saves_player_instance(self):
-		pass
-	def test_cannot_save_incomplete_player_instance(self):
-		pass
 
 class TestTournamentManager(DjangoTestCase):
 	def setUp(self):
