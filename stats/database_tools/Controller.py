@@ -124,7 +124,8 @@ class Processor:
 			dire = mdata['dire_team_id']
 		except:
 			dire = "2"
-
+		return radiant, dire
+		
 class FieldValidator:
 	def get_field_data(self, data):
 		"""
