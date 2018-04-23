@@ -80,7 +80,7 @@ class Processor:
 		heroes = self.get_heroes(mdata['players'])
 		self.g_manager.create(tournament_id, match_id, win_r, rad_teamid, 
 			dire_teamid, heroes, players)
-	def validate_matchtype
+
 	def validate_not_null(data, dataname):
 		"""
 		Checks data is not null without relying on database level
