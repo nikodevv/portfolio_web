@@ -87,8 +87,8 @@ class Processor:
 		validation
 		"""
 		if data == None:
-			assert(tournament_id is not None, "%s is null" % dataname)
-		pass
+			assert(data is not None, "%s is null" % dataname)
+		
 
 	@staticmethod
 	def _filter_tdata(data):
