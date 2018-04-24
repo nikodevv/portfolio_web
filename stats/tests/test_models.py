@@ -30,7 +30,7 @@ class TestGameManager(DjangoTestCase):
 		self.manager = GameManager()
 
 	def test_creates_matches(self):
-		tournament = TournamentManager.create(tid='9999', 
+		tournament = TournamentManager().create(tid='9999', 
 			tindex='5546', tname='tournament')
 		mid = '1'
 		win_radiant = True

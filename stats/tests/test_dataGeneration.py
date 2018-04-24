@@ -103,17 +103,17 @@ class TestProcessor(PythonTestCase, TestData):
 		match_ids = self.processor.get_match_ids_from_api_call(data)
 		self.assertEqual(match_ids, [x['match_id'] for x in data['matches']])
 
-	# Processor().create_game(...) should call GameManager.create()
+	# Processor().pass_data(...) should call GameManager.create()
 	# The test checks to see if the data is passed to GameManager and if it 
 	# is passed in the right order
 	# The patch statement replaces the GameManager object name, allowing for
 	# to check if a method was called without overwriting it.
-	def test_create_game_method_calls_model_manager_equivalent(self):
+	def test_pass_data_method_calls_model_manager_equivalent(self):
 		mdata = TestData.create_match_details_data()
 		heroes_data = Processor.get_heroes(mdata['players'])
 		players_data = Processor.get_players(mdata['players'])
 		with patch.object(self.processor.g_manager, 'create') as mock:
-			self.processor.create_game(mdata)
+			self.processor.pass_data(mdata)
 			mock.assert_called_with(mdata['leagueid'], mdata['match_id'], 
 				mdata['radiant_win'], mdata['radiant_team']['team_name'], 
 				mdata['dire_team']['team_name'], heroes_data, players_data)
@@ -153,4 +153,3 @@ class TestGameManager(DjangoTestCase):
 	def test_sets_match_length(self):
 		self.fail("finish test, implement functionality")
 
-	

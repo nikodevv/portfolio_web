@@ -63,12 +63,26 @@ class Processor:
 
 	def create_game(self, mdata):
 		"""
-		takes a matchdetails dota2api call and dispatches relevant info to
-		models manager
+		Takes a matchdetails dota2api call and passes it for further
+		processing if the data is valid.
 		"""
 		# game_type == 8 corresponds to captains mode
-		if int(mdata['game_mode']) != int(2):
-			return None
+		self.create_game_if_game_mode_valid(mdata)(mdata)
+		
+	def create_game_if_game_mode_valid(self, mdata):
+		"""
+		Returns reference to a function that passes
+		data to GameManager only if data is valid.
+		"""
+		try:
+			if int(mdata['game_mode']) == int(2):
+				return self.pass_data
+		except:
+			pass
+		nullFunction = (lambda x: x)
+		return nullFunction
+
+	def pass_data(self, mdata):
 		tournament_id = mdata['leagueid']
 		self.validate_not_null(tournament_id, "tournament_id")
 		
@@ -125,7 +139,7 @@ class Processor:
 		except:
 			dire = "2"
 		return radiant, dire
-		
+
 class FieldValidator:
 	def get_field_data(self, data):
 		"""
