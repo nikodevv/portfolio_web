@@ -71,8 +71,9 @@ class TestController(PythonTestCase):
 
 class TestProcessor(PythonTestCase, TestData):
 	def setUp(self):
-		START = 17411
-		self.processor = Processor(START, 25000)
+		START = 17421
+		END = 17422
+		self.processor = Processor(START, END)
 
 	def test_tournament_filter(self):
 		data = self.get_api_t1()
@@ -82,11 +83,14 @@ class TestProcessor(PythonTestCase, TestData):
 		self.assertEqual(arg3, data['name'][:20])
 
 	def test_can_create_tournaments_given_api_input(self):
+		# Tournament counters (i.e. num_tournaments_start)
+		# are used incase database isn't empty on test start
+		num_tournaments_start = Tournaments.objects.all()
 		data = self.get_api_data_3_tournaments()
 		self.processor.create_tournaments(data)
-		tournaments = Tournament.objects.all()
+		num_tournaments = Tournament.objects.all()
 		# creates only 2 tournaments due to START = 17411
-		self.assertEqual(len(tournaments), 2)
+		self.assertEqual(len(num_tournaments)-len(num_tournaments_start), 2)
 		# tournament 1 is the first tournament
 		self.assertEqual(tournaments[0].tid,  data[0]['leagueid'])
 		self.assertEqual(tournaments[1].tindex, data[2]['itemdef'])
@@ -114,9 +118,14 @@ class TestProcessor(PythonTestCase, TestData):
 		players_data = Processor.get_players(mdata['players'])
 		with patch.object(self.processor.g_manager, 'create') as mock:
 			self.processor.pass_data(mdata)
+			# "1" and "2" are expected as default values for team ids
+			# when no "dire_team_id" or "radiant_team_id" are passed
+			# to Processor.pass_data. 
+			# TestData.create_match_details_data() contains no team_ids
+			# hence the test takes "1" and "2"
 			mock.assert_called_with(mdata['leagueid'], mdata['match_id'], 
-				mdata['radiant_win'], mdata['radiant_team']['team_name'], 
-				mdata['dire_team']['team_name'], heroes_data, players_data)
+				mdata['radiant_win'], "1", 
+				"2", heroes_data, players_data)
 
 	def test_get_players(self):
 		players_data = TestData.create_10_players()

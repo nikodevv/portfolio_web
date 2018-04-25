@@ -53,7 +53,7 @@ class TestGameManager(DjangoTestCase):
 		"""
 		Currently failing intentionally
 		"""
-		tournament = TournamentManager.create(tid='9999', 
+		tournament = TournamentManager().create(tid='9999', 
 			tindex='5546', tname='tournament')
 		mid = '1'
 		win_radiant = True
