@@ -6,7 +6,7 @@ class TestModels(TestCase):
 	
 	def test_saves_tournaments(self):
 		pass
-	def test_saves_match(self)
+	def test_saves_match(self):
 		pass
 	def test_saves_player_instance(self):
 		pass
