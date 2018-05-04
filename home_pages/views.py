@@ -2,13 +2,13 @@ from django.shortcuts import render
 
 # Create your views here.
 def home_view(request):
-	return render(request, 'homepage.html', {'current_page': 'Home'})
+	return render(request, 'homepage.html', {'current_page': 'About'})
 
 def home_m_view(request):
 	# has to return home-mobile.html not hompage-mobile.html, even though
 	# the latter would be consistent with home_view()
 	# This is because of a front-end redirect script
-	return render(request, 'home-mobile.html', {'current_page': 'Home'})
+	return render(request, 'home-mobile.html', {'current_page': 'About'})
 
 def contact_view(request):
 	return render(request, 'contact.html', {'current_page': 'Contact'})

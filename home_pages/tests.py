@@ -30,3 +30,8 @@ class TestViews(TestCase):
 	def test_projects_page_returns_correct_html(self):
 		response = self.client.get('/projects/')
 		self.assertTemplateUsed(response,'projects.html')
+
+	def test_urls_are_finished(self):
+		self.fail("Remove all stats test from this branch, and clean up URL names"+
+			" so that all names use consistent methodology. In particular this means editing the" + 
+			" redirection script for mobile.")

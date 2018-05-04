@@ -22,7 +22,7 @@ from stats import views as stats_views
 
 urlpatterns = [
     #url(r'^admin/', admin.site.urls),
-    url(r'^$', homepage_views.home_view, name='homepage'),
+    url(r'^$', homepage_views.projects_view, name='homepage'),
     url(r'^', include(homepage_urls)), #sets home_pages/urls.py as root
     url(r'^stats/', include(stats_urls)),
 ]

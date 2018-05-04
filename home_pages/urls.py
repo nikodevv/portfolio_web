@@ -18,7 +18,7 @@ from django.contrib import admin
 from home_pages import views as homepage_views
 
 urlpatterns = [
-    url(r'^$', homepage_views.home_view, name='homepage'),
+    url(r'^about/$', homepage_views.home_view, name='homepage'),
     url(r'^home-mobile/$', homepage_views.home_m_view, name='homepage-mobile'),
     url(r'^contact/$', homepage_views.contact_view, name='contact_page'),
     url(r'^contact-mobile/$', homepage_views.contact_m_view, name='contact_page-mobile'),
