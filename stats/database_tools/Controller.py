@@ -167,9 +167,12 @@ class GameManager(models.Manager, FieldValidator):
 	def create(self, tournament_id, match, win_r, rad_teamid, dire_teamid, 
 		hero_ids, player_ids):
 		tournament = self.get_tournament_by_id(tournament_id)
-		self.create_match(tournament, match, win_r, rad_teamid, dire_teamid, 
-			hero_ids, player_ids)
-
+		try:
+			self.create_match(tournament, match, win_r, rad_teamid, dire_teamid, 
+				hero_ids, player_ids)
+		except:
+			# Maybe log
+			pass
 	def create_match(self,tournament, match_id, win_r, rad_teamid, dire_teamid, 
 		hero_ids, player_ids):
 		entry = Match()
@@ -206,4 +209,6 @@ class GameManager(models.Manager, FieldValidator):
 		return Tournament.objects.get(pk=tournament_id)
 
 API_KEY = '93E37410337F61C24E4C2496BFB68DE0'
-models_creator = Controller(API_KEY)
+
+if __name__ == '__main__':
+	models_creator = Controller(API_KEY)

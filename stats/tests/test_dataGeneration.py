@@ -3,8 +3,9 @@ from django.test import TestCase as DjangoTestCase
 from unittest.mock import patch 
 import dota2api
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from stats.database_tools.Controller import Controller, Processor, GameManager
+from stats.database_tools.Controller import Processor, GameManager
 from stats.models import Tournament
+from stats.tests.timer import TimeIt
 
 API_KEY = '93E37410337F61C24E4C2496BFB68DE0'
 
@@ -55,26 +56,13 @@ class TestData:
 	def create_10_players():
 		return [TestData.create_player_instance(str(x), str(2*x)) for x in range(1, 10)]
 
-class TestController(PythonTestCase):
-	def setUp(self):
-		self.controller = Controller(API_KEY)
-
-	def test_api_is_created(self):
-		# using isInstance or assertIsInstance is not preferable due to
-		# dota2api's Initialise function.
-
-		# league_id=1 is an invalid id and the api returns the default
-		# dictionary (i.e. default)
-		default =  ({'status': 1, 'num_results': 0, 'total_results': 0, 
-			'results_remaining': 0, 'matches': []})
-		self.assertEqual(self.controller.api.get_match_history(league_id=1), default)
-
 class TestProcessor(PythonTestCase, TestData):
 	def setUp(self):
 		START = 17421
 		END = 17422
 		self.processor = Processor(START, END)
 
+	@TimeIt.executionTime
 	def test_tournament_filter(self):
 		data = self.get_api_t1()
 		arg1, arg2, arg3 = self.processor._filter_tdata(data)
@@ -82,6 +70,7 @@ class TestProcessor(PythonTestCase, TestData):
 		self.assertEqual(arg2, data['itemdef'])
 		self.assertEqual(arg3, data['name'][:20])
 
+	@TimeIt.executionTime
 	def test_can_create_tournaments_given_api_input(self):
 		# Tournament counters (i.e. num_tournaments_start)
 		# are used incase database isn't empty on test start
@@ -95,6 +84,7 @@ class TestProcessor(PythonTestCase, TestData):
 		self.assertEqual(tournaments[0].tid,  data[0]['leagueid'])
 		self.assertEqual(tournaments[1].tindex, data[2]['itemdef'])
 
+	@TimeIt.executionTime
 	def test_tournament_creation_also_returns_tournament_ids_of_created_objects(self):
 		data = self.get_api_data_3_tournaments()
 		tournament_ids = self.processor.create_tournaments(data)
@@ -102,6 +92,7 @@ class TestProcessor(PythonTestCase, TestData):
 		# only gets 2 ids back due to START = 17411
 		self.assertEqual(tournament_ids, [data[0]['leagueid'], data[2]['leagueid']])
 
+	@TimeIt.executionTime
 	def test_returns_match_ids(self):
 		data = self.get_match_history()
 		match_ids = self.processor.get_match_ids_from_api_call(data)
@@ -112,6 +103,7 @@ class TestProcessor(PythonTestCase, TestData):
 	# is passed in the right order
 	# The patch statement replaces the GameManager object name, allowing for
 	# to check if a method was called without overwriting it.
+	@TimeIt.executionTime
 	def test_pass_data_method_calls_model_manager_equivalent(self):
 		mdata = TestData.create_match_details_data()
 		heroes_data = Processor.get_heroes(mdata['players'])
@@ -127,16 +119,19 @@ class TestProcessor(PythonTestCase, TestData):
 				mdata['radiant_win'], "1", 
 				"2", heroes_data, players_data)
 
+	@TimeIt.executionTime
 	def test_get_players(self):
 		players_data = TestData.create_10_players()
 		self.assertEqual(self.processor.get_players(players_data), 
 			[player['account_id'] for player in players_data])
 
+	@TimeIt.executionTime
 	def test_get_heroes(self):
 		heroes = TestData.create_10_players()
 		self.assertEqual(self.processor.get_heroes(heroes), 
 			[player['hero_id'] for player in heroes])
 
+	@TimeIt.executionTime
 	def test_correct_game_mode_being_selected_by_create_game_fucntion(self):
 		self.fail("Make sure the game mode is the correct one!")
 

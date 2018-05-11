@@ -38,7 +38,7 @@ class TestGameManager(DjangoTestCase):
 		dire_teamid = '4000'
 		hero_ids = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
 		player_ids = ['111', '222', '333', '444', '555', '666', '777', '999', '000','3']
-		self.manager.create(tournament, mid, win_radiant, rad_teamid, 
+		self.manager.create(tournament.tid, mid, win_radiant, rad_teamid, 
 			dire_teamid, hero_ids, player_ids)
 		saved_matches = Match.objects.all()
 		self.assertEqual(saved_matches[0].mid, mid)
