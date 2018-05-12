@@ -74,7 +74,7 @@ class TestProcessor(PythonTestCase, TestData):
 	def test_can_create_tournaments_given_api_input(self):
 		# Tournament counters (i.e. num_tournaments_start)
 		# are used incase database isn't empty on test start
-		num_tournaments_start = Tournaments.objects.all()
+		num_tournaments_start = Tournament.objects.all()
 		data = self.get_api_data_3_tournaments()
 		self.processor.create_tournaments(data)
 		num_tournaments = Tournament.objects.all()
