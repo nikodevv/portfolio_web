@@ -130,10 +130,6 @@ class TestProcessor(PythonTestCase, TestData):
 		self.assertEqual(self.processor.get_heroes(heroes), 
 			[player['hero_id'] for player in heroes])
 
-	@TimeIt.executionTime
-	def test_correct_game_mode_being_selected_by_create_game_fucntion(self):
-		self.fail("Make sure the game mode is the correct one!")
-
 class TestGameManager(DjangoTestCase):
 	def setUp(self):
 		self.g_manager = GameManager()
