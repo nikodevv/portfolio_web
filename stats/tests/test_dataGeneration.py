@@ -21,13 +21,13 @@ class TestData:
 		return [t1, t2, t3]
 	@staticmethod
 	def get_api_t1():
-		return {'name': 'First Name', 'randomename': 'randomVar', 'itemdef':'18000', 'leagueid':'30'}
+		return {'name': 'First Name', 'randomename': 'randomVar', 'itemdef':'17421', 'leagueid':'30'}
 	@staticmethod
 	def get_api_t2():
-		return {'name': 'Second Name', 'randomename': 'randomVar2', 'itemdef':'17000', 'leagueid':'34'}
+		return {'name': 'Second Name', 'randomename': 'randomVar2', 'itemdef':'17422', 'leagueid':'34'}
 	@staticmethod
 	def get_api_t3():
-		return {'name': 'Second Name', 'randomename': 'randomVar2', 'itemdef':'19000', 'leagueid':'37'}
+		return {'name': 'Second Name', 'randomename': 'randomVar2', 'itemdef':'17423', 'leagueid':'37'}
 
 	@staticmethod
 	def get_match_history():
@@ -74,15 +74,15 @@ class TestProcessor(PythonTestCase, TestData):
 	def test_can_create_tournaments_given_api_input(self):
 		# Tournament counters (i.e. num_tournaments_start)
 		# are used incase database isn't empty on test start
-		num_tournaments_start = Tournament.objects.all()
+		tournaments_start = len(Tournament.objects.all())
 		data = self.get_api_data_3_tournaments()
 		self.processor.create_tournaments(data)
-		num_tournaments = Tournament.objects.all()
-		# creates only 2 tournaments due to START = 17411
-		self.assertEqual(len(num_tournaments)-len(num_tournaments_start), 2)
+		tournaments = Tournament.objects.all()
+		print("THERE ARE %s tournaments" % tournaments_start)
+		self.assertEqual(len(tournaments)-tournaments_start, 2)
 		# tournament 1 is the first tournament
 		self.assertEqual(tournaments[0].tid,  data[0]['leagueid'])
-		self.assertEqual(tournaments[1].tindex, data[2]['itemdef'])
+		self.assertEqual(tournaments[1].tindex, data[1]['itemdef'])
 
 	@TimeIt.executionTime
 	def test_tournament_creation_also_returns_tournament_ids_of_created_objects(self):
@@ -138,10 +138,6 @@ class TestProcessor(PythonTestCase, TestData):
 class TestGameManager(DjangoTestCase):
 	def setUp(self):
 		self.g_manager = GameManager()
-	
-	def test_create_method_calls_create_game_with_correct_fields(self):
-		self.fail("finish test")
-
 	def test_finds_tournament_instance(self):
 		tournament_id = "1"
 		entry = Tournament()

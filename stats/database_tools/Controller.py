@@ -170,9 +170,9 @@ class GameManager(models.Manager, FieldValidator):
 		try:
 			self.create_match(tournament, match, win_r, rad_teamid, dire_teamid, 
 				hero_ids, player_ids)
-		except:
-			# Maybe log
-			pass
+		except Exception as e:
+			print("Error creating game.")
+			print (e)
 	def create_match(self,tournament, match_id, win_r, rad_teamid, dire_teamid, 
 		hero_ids, player_ids):
 		entry = Match()
