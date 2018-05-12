@@ -78,7 +78,6 @@ class TestProcessor(PythonTestCase, TestData):
 		data = self.get_api_data_3_tournaments()
 		self.processor.create_tournaments(data)
 		tournaments = Tournament.objects.all()
-		print("THERE ARE %s tournaments" % tournaments_start)
 		self.assertEqual(len(tournaments)-tournaments_start, 2)
 		# tournament 1 is the first tournament
 		self.assertEqual(tournaments[0].tid,  data[0]['leagueid'])
