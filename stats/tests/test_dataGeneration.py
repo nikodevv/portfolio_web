@@ -89,7 +89,7 @@ class TestProcessor(PythonTestCase, TestData):
 		tournament_ids = self.processor.create_tournaments(data)
 		self.assertIsInstance(tournament_ids, list)
 		# only gets 2 ids back due to START = 17411
-		self.assertEqual(tournament_ids, [data[0]['leagueid'], data[2]['leagueid']])
+		self.assertEqual(tournament_ids, [data[0]['leagueid'], data[1]['leagueid']])
 
 	@TimeIt.executionTime
 	def test_returns_match_ids(self):
