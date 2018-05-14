@@ -11,7 +11,11 @@ API_KEY = '93E37410337F61C24E4C2496BFB68DE0'
 
 class TestData:
 	"""Provides testcases with input data. 
-	Naming conventions: t1, t2 ,t3 corresponds to tournament1, tournament2, ..."""
+	Naming conventions: t1, t2 ,t3 corresponds to tournament1, tournament2, ...
+	'itemdef' refers to dota2api name which is an enumeration of tournaments by date
+	'leagueid' is the actual tournament id
+	There is a 1:1 correspondance between itemdefs and leagueids
+	"""
 	@staticmethod
 	def get_api_data_3_tournaments():
 		t1 = TestData.get_api_t1()
