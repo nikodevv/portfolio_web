@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'portfolio_web',
     'stats',
     'updateDatabase',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
