@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.conf.urls import url
 from stats import views as stats_views
+from rest_framework import routers, serializers, viewsets
+
 urlpatterns = [
     url(r'^$', stats_views.test_view, name='stats_home'),
 ]
