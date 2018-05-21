@@ -14,8 +14,9 @@ class Controller:
 	"""
 
 	def __init__(self, API_KEY):
-		self.START_ID = 17420 # using itemdef not id
-		self.END_ID = 17450 # using itemdef not id
+		# Initializing with start @ 17410-17414, 17415-17418, then 17420-17430, finally 17430-17450
+		self.START_ID = 17410 # using itemdef not id [prev 17430]
+		self.END_ID = 17417 # using itemdef not id #previously 17450
 		self.api = dota2api.Initialise(API_KEY)
 		self.processor = Processor(self.START_ID, self.END_ID)
 		self.create_tournaments()
