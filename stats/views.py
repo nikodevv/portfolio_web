@@ -1,7 +1,8 @@
 from django.shortcuts import render
-from stats.models import Tournament
-from stats.serializers import TournamentSerializer
+from stats.models import Tournament, Match
+from stats.serializers import TournamentSerializer, MatchSerializer
 from rest_framework.views import APIView
+from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework import status
 import json
@@ -26,3 +27,20 @@ class TournamentList(APIView):
 		tours = Tournament.objects.all()
 		serializer = TournamentSerializer(tours, many=True)
 		return Response(serializer.data)
+
+class MatchList(ListAPIView):
+	"""
+	Displays list of matches based on query parameters
+	"""
+	serializer_class = MatchSerializer
+
+	def get_queryset(self):
+		"""
+		Returns and optionally filters matches 
+		against parameters including "team_id"
+		"""
+		queryset =  Match.objects.all()
+		team_id = self.request.query_params.get('team_id', None)
+		if team_id is not None:
+			queryset = queryset.filter(rad_teamid=team_id)
+		return queryset

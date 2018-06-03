@@ -14,12 +14,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url
-from stats.views import TournamentList
+from stats.views import TournamentList, MatchList
 from rest_framework.urlpatterns import format_suffix_patterns
 
 urlpatterns = [
 
     url(r'tournaments', TournamentList.as_view()),
+    url(r'matches', MatchList.as_view()),
+    
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns, suffix_required=False)
