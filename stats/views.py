@@ -44,30 +44,41 @@ class MatchList(ListAPIView):
 		against parameters including "team_id"
 		"""
 		queryset =  Match.objects.all()
-		team_id = self.request.query_params.get('team_id', None)
-		if team_id is not None:
-			team_id = self._format_team_id(team_id)
-			queryset = self._filter_teams(queryset, team_id)
+		# Is this ok? passing self like that?
+		queryset = TeamQueryFilter.filter(self.request, queryset)
 		return queryset
 
-	def _filter_teams(self, queryset, teams):
+
+class TeamQueryFilter:
+	@staticmethod
+	def filter(request, queryset):
+		team_id = request.query_params.get('team_id', None)
+		if team_id is not None:
+			team_id = _format_team_id(team_id)
+			queryset = _filter_teams(queryset, team_id)
+		return queryset
+
+	@staticmethod
+	def _filter_teams(queryset, teams):
 		# Note time complexity does not include postgreSQL
 		# search operations (generally log(n) time).
-		print("fisrt function is called")
+
 		# sets queryset to match any games with first team in teams
-		final_queryset = self._filter_for_team_id(queryset, teams[0])
+		final_queryset = _filter_for_team_id(queryset, teams[0])
 		# unites querysets for each team to the first
 		for team in teams:
 			if team is not teams[0]:
 				final_queryset = final_queryset.union(
-					self._filter_for_team_id(queryset, team))
+					_filter_for_team_id(queryset, team))
 		return final_queryset
-		
-	def _filter_for_team_id(self, queryset, team_id):
+	
+	@staticmethod
+	def _filter_for_team_id(queryset, team_id):
 		return queryset.filter(rad_teamid=team_id).union(
 			queryset.filter(dire_teamid=team_id))
 
-	def _format_team_id(self, team_ids_string):
+	@staticmethod
+	def _format_team_id(team_ids_string):
 		if "-" not in team_ids_string:
 			return [team_ids_string]
 		return team_ids_string.split("-")
