@@ -44,12 +44,12 @@ class TestMatchList(TestCase):
 		self.assertEqual(len(data),3)
 
 		# sends request filtering for 3rd game
-		print(Match.objects.last().dire_teamid)
 		response = self.client.get(self.mURL + '?teams=77',format='json')
 		data = json.loads(self.decode(response))
 		self.assertEqual(len(data), 1)
 		self.assertEqual(data[0]["mid"], "1102.0")
 
+		# sends request filtering for 1st and 3rd games
 		response = self.client.get(self.mURL + '?teams=11',format='json')
 		data = json.loads(self.decode(response))
 		self.assertEqual(len(data),2)
