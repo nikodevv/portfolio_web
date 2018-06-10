@@ -13,7 +13,7 @@ class TestMatchList(TestCase):
 		# url for matches
 		self.mURL = '/stats/matches'
 
-	def test_can_make_non_filtered_match_query(self):
+	def test_can_make_non_filtered_query(self):
 		# tests empty database returns '[]' str 
 		response = self.client.get(self.mURL,format='json')
 		self.assertEqual(response.status_code, 200)
@@ -33,6 +33,28 @@ class TestMatchList(TestCase):
 		self.assertEqual(data[0]["mid"], "1100.0")
 		self.assertEqual(data[1]["mid"], "1101.0")
 		self.assertEqual(data[2]["mid"], "1102.0")
+
+	def test_can_filter_based_on_single_match_id(self):
+		self.testData.create_row() #1st has teams [11,22]
+		self.testData.create_row(teams=['22','33']) #2nd
+		self.testData.create_row(teams=['11','77']) #3rd
+		# makes sure all matches are saved to db
+		response = self.client.get(self.mURL,format='json')
+		data = json.loads(self.decode(response))
+		self.assertEqual(len(data),3)
+
+		# sends request filtering for 3rd game
+		print(Match.objects.last().dire_teamid)
+		response = self.client.get(self.mURL + '?teams=77',format='json')
+		data = json.loads(self.decode(response))
+		self.assertEqual(len(data), 1)
+		self.assertEqual(data[0]["mid"], "1102.0")
+
+		response = self.client.get(self.mURL + '?teams=11',format='json')
+		data = json.loads(self.decode(response))
+		self.assertEqual(len(data),2)
+		self.assertEqual(data[0]["mid"], "1100.0")
+		self.assertEqual(data[1]["mid"], "1102.0")
 
 	def decode(self, response):
 		return response.content.decode("utf-8", "strict")
