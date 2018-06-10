@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.db.models import Q
 from stats.models import Tournament, Match
 from stats.serializers import TournamentSerializer, MatchSerializer
 from rest_framework.views import APIView
@@ -28,6 +29,7 @@ class TournamentList(APIView):
 		serializer = TournamentSerializer(tours, many=True)
 		return Response(serializer.data)
 
+# Speed can be improved if reformatted via | instead of union
 class MatchList(ListAPIView):
 	"""
 	Displays list of matches based on query parameters.
@@ -46,16 +48,16 @@ class MatchList(ListAPIView):
 		queryset =  Match.objects.all()
 		# Is this ok? passing self like that?
 		queryset = TeamQueryFilter.filter(self.request, queryset)
+		queryset = HeroQueryFilter.filter(self.request, queryset)
 		return queryset
 
 
 class TeamQueryFilter:
 	@staticmethod
 	def filter(request, queryset):
-		team_id = request.query_params.get('team_id', None)
+		team_id = request.query_params.get('teams', None)
 		if team_id is not None:
-			team_id = _format_team_id(team_id)
-			queryset = _filter_teams(queryset, team_id)
+			queryset = TeamQueryFilter._filter_teams(queryset, team_id)
 		return queryset
 
 	@staticmethod
@@ -64,21 +66,72 @@ class TeamQueryFilter:
 		# search operations (generally log(n) time).
 
 		# sets queryset to match any games with first team in teams
-		final_queryset = _filter_for_team_id(queryset, teams[0])
+		if isinstance(teams, list) == True:
+			final_queryset = TeamQueryFilter._filter_for_team_id(queryset, teams[0])
+		else:
+			final_queryset = TeamQueryFilter._filter_for_team_id(queryset, teams)
+
 		# unites querysets for each team to the first
 		for team in teams:
 			if team is not teams[0]:
 				final_queryset = final_queryset.union(
-					_filter_for_team_id(queryset, team))
+					TeamQueryFilter._filter_for_team_id(queryset, team))
 		return final_queryset
 	
+	#Refactor for Q not union
 	@staticmethod
 	def _filter_for_team_id(queryset, team_id):
-		return queryset.filter(rad_teamid=team_id).union(
-			queryset.filter(dire_teamid=team_id))
+		return queryset.filter(
+			Q(rad_teamid=team_id) | Q(dire_teamid=team_id)
+			)
+
+
+class HeroQueryFilter:
+	@staticmethod
+	def filter(request, queryset):
+		hero_ids = request.query_params.get('hero', None)
+		if hero_ids is not None:
+			queryset = HeroQueryFilter._filter_heroes(hero_ids, queryset)
+		return queryset
+	"""
+
+
+
+
+
+				Definately want to add the isinstance(...) to TeamQueryFilter
+				Still have bug where lists aren't being added correctly
+
+				-- maybe fixed it by using | operator. Nope.
+
+
+
+
+	"""
+	@staticmethod
+	def _filter_heroes(hero_ids, queryset):
+		# iterates over list if id_ is lists, else just calls function directly
+		if isinstance(hero_ids, list) == True:
+			queryset = HeroQueryFilter._get_relevant_matches(hero_ids[0], queryset)
+			for id_ in hero_ids:
+				queryset = queryset | HeroQueryFilter._get_relevant_matches(id_, queryset)
+		else:
+			queryset = HeroQueryFilter._get_relevant_matches(hero_ids, queryset)
+		return queryset
 
 	@staticmethod
-	def _format_team_id(team_ids_string):
-		if "-" not in team_ids_string:
-			return [team_ids_string]
-		return team_ids_string.split("-")
+	def _get_relevant_matches(id_, queryset):
+		print(id_)
+		queryset = queryset.filter(
+			Q(rad1_heroid=id_) |
+			Q(rad2_heroid=id_) |
+			Q(rad3_heroid=id_) |
+			Q(rad4_heroid=id_) |
+			Q(rad5_heroid=id_) |
+			Q(dire1_heroid=id_) |
+			Q(dire2_heroid=id_) |
+			Q(dire3_heroid=id_) |
+			Q(dire4_heroid=id_) |
+			Q(dire5_heroid=id_) 
+			)
+		return queryset
