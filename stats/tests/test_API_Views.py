@@ -56,8 +56,64 @@ class TestMatchList(TestCase):
 		self.assertEqual(data[0]["mid"], "1100.0")
 		self.assertEqual(data[1]["mid"], "1102.0")
 
+	def test_can_filter_based_on_multiple_match_ids(self):
+		self.testData.create_row() #1st has teams [11,22]
+		self.testData.create_row(teams=['22','33']) #2nd
+		self.testData.create_row(teams=['77','11']) #3rd
+		self.testData.create_row(teams=['33','77']) #4th
+		self.testData.create_row(teams=['99','33']) #5th
+		
+		# makes sure all matches are saved to db
+		response = self.client.get(self.mURL, format='json')
+		data = json.loads(self.decode(response))
+		self.assertEqual(len(data),5)
+
+		# sends request filtering for 1st 3rd 4th games
+		response = self.client.get(self.mURL + '?teams=11,77', format='json')
+		data = json.loads(self.decode(response))
+		self.assertEqual(len(data), 3)
+		match_ids = self._get_list(data, "mid")
+		self.assertIn("1100.0", match_ids)
+		self.assertIn("1102.0", match_ids)
+		self.assertIn("1103.0", match_ids)
+		self.assertNotIn("1101.0", match_ids)
+
+
+	def test_can_filter_based_on_single_heroid(self):
+		#1st has heroes "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"
+		self.testData.create_row()
+		self.testData.create_row(
+			heroes = ["22", "2", "33", "4", "5", "6", "7", "8", "9", "11"]
+			)
+		self.testData.create_row(
+			heroes = ["1", "11", "3", "4", "5", "6", "7", "8", "9", "10"]
+			)
+
+		# tests that only game 2 comes up when filtering for heroid "11"
+		response = self.client.get(self.mURL+"?heroes=22", format='json')
+		data = json.loads(self.decode(response))
+		self.assertEqual(len(data),1)
+		self.assertEqual(data[0]["mid"], "1100.0")
+
+		# tests that both game 1 and 3 come up when filtering for "3"
+		response = self.client.get(self.mURL+"?heroes=3", format='json')
+		data = json.loads(self.decode(response))
+		self.assertEqual(len(data),2)
+		self.assertEqual(data[0]["mid"], "1100.0")
+		self.assertEqual(data[0]["mid"], "1102.0")
+
 	def decode(self, response):
 		return response.content.decode("utf-8", "strict")
+
+	def _get_list(self, data, param):
+		""""
+		returns list of values from a list of dictionaries such
+		that dict[param] is in the returned list for every dict.
+		"""
+		list_ = []
+		for i in data:
+			list_.append(i[param])
+		return list_
 
 class TestData:
 	def __init__(self):
@@ -113,7 +169,7 @@ class TestData:
 		rad_teamid = teams[0]
 		dire_teamid = teams[1]
 		return [match_id, win_r, rad_teamid, 
-			dire_teamid, self.default_heroes, self.default_players]
+			dire_teamid, heroes, self.default_players]
 
 	def _set_None_paramaters_to_class_default(self, param_str, param):
 		"""

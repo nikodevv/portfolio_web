@@ -57,6 +57,8 @@ class TeamQueryFilter:
 	def filter(request, queryset):
 		team_id = request.query_params.get('teams', None)
 		if team_id is not None:
+			# breaks out team_ids string into list
+			team_id = team_id.split(",") 
 			queryset = TeamQueryFilter._filter_teams(queryset, team_id)
 		return queryset
 
@@ -89,8 +91,9 @@ class TeamQueryFilter:
 class HeroQueryFilter:
 	@staticmethod
 	def filter(request, queryset):
-		hero_ids = request.query_params.get('hero', None)
+		hero_ids = request.query_params.get('heroes', None)
 		if hero_ids is not None:
+			hero_ids.split(",")
 			queryset = HeroQueryFilter._filter_heroes(hero_ids, queryset)
 		return queryset
 	"""
@@ -112,16 +115,18 @@ class HeroQueryFilter:
 	def _filter_heroes(hero_ids, queryset):
 		# iterates over list if id_ is lists, else just calls function directly
 		if isinstance(hero_ids, list) == True:
-			queryset = HeroQueryFilter._get_relevant_matches(hero_ids[0], queryset)
+			print("SHOULDNT PRINT")
+			final_queryset = HeroQueryFilter._get_relevant_matches(hero_ids[0], queryset)
 			for id_ in hero_ids:
-				queryset = queryset | HeroQueryFilter._get_relevant_matches(id_, queryset)
+				final_queryset = final_queryset | HeroQueryFilter._get_relevant_matches(id_, queryset)
 		else:
-			queryset = HeroQueryFilter._get_relevant_matches(hero_ids, queryset)
-		return queryset
+			print("OK")
+			print("hero_ids are " + hero_ids)
+			final_queryset = HeroQueryFilter._get_relevant_matches(hero_ids, queryset)
+		return final_queryset
 
 	@staticmethod
 	def _get_relevant_matches(id_, queryset):
-		print(id_)
 		queryset = queryset.filter(
 			Q(rad1_heroid=id_) |
 			Q(rad2_heroid=id_) |

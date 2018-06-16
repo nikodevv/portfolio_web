@@ -19,8 +19,8 @@ from rest_framework.urlpatterns import format_suffix_patterns
 
 urlpatterns = [
 
-    url(r'tournaments', TournamentList.as_view()),
-    url(r'matches', MatchList.as_view()),
+    url(r'tournaments', TournamentList.as_view(), name="tourFilter"),
+    url(r'matches', MatchList.as_view(), name="matchFilter"),
     
 ]
 
