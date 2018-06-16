@@ -25,4 +25,5 @@ urlpatterns = [
     url(r'^$', homepage_views.projects_view, name='homepage'),
     url(r'^', include(homepage_urls)), #sets home_pages/urls.py as root
     url(r'^stats/', include(stats_urls)),
+    url(r'^api-auth', include('rest_framework.urls'))
 ]

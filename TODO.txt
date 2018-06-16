@@ -1,1 +1,3 @@
 Write regression test to check links and paragraphs are identical on mobile and non-mobile templates.
+
+Check whether the REST_FRAMEWORK premissions in settings.py are fully the intended ones. In particular, are the django.contrib.auth premissions necessary.

@@ -14,7 +14,15 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url
-from stats import views as stats_views
+from stats.views import TournamentList, MatchList
+from rest_framework.urlpatterns import format_suffix_patterns
+
 urlpatterns = [
-    url(r'^$', stats_views.test_view, name='stats_home'),
+
+    url(r'tournaments', TournamentList.as_view(), name="tourFilter"),
+    url(r'matches', MatchList.as_view(), name="matchFilter"),
+    
 ]
+
+urlpatterns = format_suffix_patterns(urlpatterns, suffix_required=False)
+
