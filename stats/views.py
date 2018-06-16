@@ -93,35 +93,18 @@ class HeroQueryFilter:
 	def filter(request, queryset):
 		hero_ids = request.query_params.get('heroes', None)
 		if hero_ids is not None:
-			hero_ids.split(",")
+			hero_ids = hero_ids.split(",")
 			queryset = HeroQueryFilter._filter_heroes(hero_ids, queryset)
 		return queryset
-	"""
 
-
-
-
-
-				Definately want to add the isinstance(...) to TeamQueryFilter
-				Still have bug where lists aren't being added correctly
-
-				-- maybe fixed it by using | operator. Nope.
-
-
-
-
-	"""
 	@staticmethod
 	def _filter_heroes(hero_ids, queryset):
 		# iterates over list if id_ is lists, else just calls function directly
 		if isinstance(hero_ids, list) == True:
-			print("SHOULDNT PRINT")
 			final_queryset = HeroQueryFilter._get_relevant_matches(hero_ids[0], queryset)
 			for id_ in hero_ids:
 				final_queryset = final_queryset | HeroQueryFilter._get_relevant_matches(id_, queryset)
 		else:
-			print("OK")
-			print("hero_ids are " + hero_ids)
 			final_queryset = HeroQueryFilter._get_relevant_matches(hero_ids, queryset)
 		return final_queryset
 

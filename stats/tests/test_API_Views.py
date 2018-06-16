@@ -89,18 +89,38 @@ class TestMatchList(TestCase):
 			heroes = ["1", "11", "3", "4", "5", "6", "7", "8", "9", "10"]
 			)
 
-		# tests that only game 2 comes up when filtering for heroid "11"
-		response = self.client.get(self.mURL+"?heroes=22", format='json')
+		# tests that only game 2 and 3 come up when filtering for heroid "11"
+		response = self.client.get(self.mURL+"?heroes=11", format='json')
 		data = json.loads(self.decode(response))
-		self.assertEqual(len(data),1)
-		self.assertEqual(data[0]["mid"], "1100.0")
+		self.assertEqual(len(data),2)
+		self.assertEqual(data[0]["mid"], "1101.0")
+		self.assertEqual(data[1]["mid"], "1102.0")
 
 		# tests that both game 1 and 3 come up when filtering for "3"
 		response = self.client.get(self.mURL+"?heroes=3", format='json')
 		data = json.loads(self.decode(response))
 		self.assertEqual(len(data),2)
-		self.assertEqual(data[0]["mid"], "1100.0")
-		self.assertEqual(data[0]["mid"], "1102.0")
+		match_ids = self._get_list(data, "mid")
+		self.assertIn("1100.0", match_ids)
+		self.assertIn("1102.0", match_ids)
+
+	def test_can_filter_based_on_multiple_heroids(self):
+		#1st has heroes "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"
+		self.testData.create_row()
+		self.testData.create_row(
+			heroes = ["22", "2", "33", "4", "5", "6", "7", "8", "9", "11"]
+			)
+		self.testData.create_row(
+			heroes = ["1", "11", "3", "4", "5", "6", "7", "88", "9", "10"]
+			)
+
+		# tests that both game 2 and 3 come up when filtering for "88,22"
+		response = self.client.get(self.mURL+"?heroes=88,22", format='json')
+		data = json.loads(self.decode(response))
+		self.assertEqual(len(data),2)
+		match_ids = self._get_list(data, "mid")
+		self.assertIn("1101.0", match_ids)
+		self.assertIn("1102.0", match_ids)
 
 	def decode(self, response):
 		return response.content.decode("utf-8", "strict")
