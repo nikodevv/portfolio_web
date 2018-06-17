@@ -33,7 +33,7 @@ class TournamentList(APIView):
 class MatchList(ListAPIView):
 	"""
 	Full documentation coming soon.
-	
+
 	Displays list of matches based on query parameters.
 	To link together multiple parameters for the same 
 	field (i.e. to look up two different team ids),
@@ -96,11 +96,11 @@ class HeroQueryFilter:
 		hero_ids = request.query_params.get('heroes', None)
 		if hero_ids is not None:
 			hero_ids = hero_ids.split(",")
-			queryset = HeroQueryFilter._filter_heroes(hero_ids, queryset)
+			queryset = HeroQueryFilter._filter_heroes(queryset, hero_ids)
 		return queryset
 
 	@staticmethod
-	def _filter_heroes(hero_ids, queryset):
+	def _filter_heroes(queryset, hero_ids):
 		# iterates over list if id_ is lists, else just calls function directly
 		if isinstance(hero_ids, list) == True:
 			final_queryset = HeroQueryFilter._get_relevant_matches(hero_ids[0], queryset)
