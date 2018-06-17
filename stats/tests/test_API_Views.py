@@ -122,6 +122,34 @@ class TestMatchList(TestCase):
 		self.assertIn("1101.0", match_ids)
 		self.assertIn("1102.0", match_ids)
 
+	def test_hero_and_team_filters_are_applied_on_top_of_eachother(self):
+		"""
+		tests that filtering for teams=11,3 heroes=12 only returns results where
+		teams 11 or 3 picked hero 12, not all games where team 11 or 3 played and all games
+		where hero 12 was picked.
+		"""
+		# by default has heroes = [1, 2, 3, ... 10]
+		self.testData.create_row(
+			teams = ["999", "888"],
+		)
+		self.testData.create_row()
+		self.testData.create_row(
+			teams = ["777", "333"],
+		)
+		self.testData.create_row(
+			teams = ["777", "888"],
+			heroes = ["99", "11", "3", "4", "5", "6", "7", "88", "9", "10"]
+		)
+		# tests that only game 1 and 3 is returned
+		response = self.client.get(self.mURL+"?teams=777,999&heroes=1", format='json')
+		data = json.loads(self.decode(response))
+		print(data[0]["mid"])
+		self.assertEqual(len(data), 2)
+		match_ids = self._get_list(data, "mid")
+		self.assertIn("1100.0", match_ids)
+		self.assertIn("1102.0", match_ids)
+		self.assertNotIn("1103.0", match_ids)
+
 	def decode(self, response):
 		return response.content.decode("utf-8", "strict")
 
