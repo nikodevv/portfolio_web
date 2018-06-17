@@ -143,7 +143,6 @@ class TestMatchList(TestCase):
 		# tests that only game 1 and 3 is returned
 		response = self.client.get(self.mURL+"?teams=777,999&heroes=1", format='json')
 		data = json.loads(self.decode(response))
-		print(data[0]["mid"])
 		self.assertEqual(len(data), 2)
 		match_ids = self._get_list(data, "mid")
 		self.assertIn("1100.0", match_ids)

@@ -59,30 +59,27 @@ class TeamQueryFilter:
 	def filter(request, queryset):
 		team_id = request.query_params.get('teams', None)
 		if team_id is not None:
-			# breaks out team_ids string into list
 			team_id = team_id.split(",") 
 			queryset = TeamQueryFilter._filter_teams(queryset, team_id)
 		return queryset
 
 	@staticmethod
 	def _filter_teams(queryset, teams):
-		# Note time complexity does not include postgreSQL
-		# search operations (generally log(n) time).
-
 		# sets queryset to match any games with first team in teams
+		# thus eliminating any non-relevant matches for the remainder of the query?????
 		if isinstance(teams, list) == True:
 			final_queryset = TeamQueryFilter._filter_for_team_id(queryset, teams[0])
 		else:
 			final_queryset = TeamQueryFilter._filter_for_team_id(queryset, teams)
+			return final_queryset
 
 		# unites querysets for each team to the first
 		for team in teams:
 			if team is not teams[0]:
-				final_queryset = final_queryset.union(
+				final_queryset = (final_queryset | 
 					TeamQueryFilter._filter_for_team_id(queryset, team))
 		return final_queryset
 	
-	#Refactor for Q not union
 	@staticmethod
 	def _filter_for_team_id(queryset, team_id):
 		return queryset.filter(
@@ -105,7 +102,9 @@ class HeroQueryFilter:
 		if isinstance(hero_ids, list) == True:
 			final_queryset = HeroQueryFilter._get_relevant_matches(hero_ids[0], queryset)
 			for id_ in hero_ids:
-				final_queryset = final_queryset | HeroQueryFilter._get_relevant_matches(id_, queryset)
+				if id_ is not hero_ids[0]:
+					final_queryset = (final_queryset | 
+						HeroQueryFilter._get_relevant_matches(id_, queryset))
 		else:
 			final_queryset = HeroQueryFilter._get_relevant_matches(hero_ids, queryset)
 		return final_queryset
