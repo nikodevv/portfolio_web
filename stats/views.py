@@ -32,13 +32,9 @@ class TournamentList(APIView):
 # Speed can be improved if reformatted via | instead of union
 class MatchList(ListAPIView):
 	"""
-	Full documentation coming soon.
-
 	Displays list of matches based on query parameters.
-	To link together multiple parameters for the same 
-	field (i.e. to look up two different team ids),
-	seperate parameters with ','. For example
-	./matches?team_id=11111,22222
+
+	Full documentation coming soon.
 	"""
 	serializer_class = MatchSerializer
 
