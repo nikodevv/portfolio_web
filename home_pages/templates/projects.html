@@ -11,22 +11,23 @@
 			<div class ="sub-body">
 				<li class="list-unstyled">
 					Dota 2 is a video game with a multi-million dollar professional scene. Before each
-					game, teams draft Heroes from a common pool. The heroes chosen have a significant 
-					impact on the strategic aspects of the game. If a team is caught off gaurd during a draft,
-					it could cost them millions in potential earnings. Hence, there is a potential to add value to the
-					scene by creating draft-time analytics tools.
+					game, teams draft Heroes from a common pool, which have a significant impact on the strategic aspects of 
+					the game. During a draft, a team caught off guard stands to lose millions in potential earnings, which paves 
+					the way for draft-time analytics tools to add value. 
 					<br><br>
-					I created a Dota 2 statistics database which stores professional match data.
+					With this in mind, I created a Dota 2 statistics database which stores professional match data.
 					Although comparable databases and APIs exist, they tend to either constrict the number of results returned, or 
-					take a long time to complete queries. These APIs are not geared to provide instant or complete results, which 
-					makes them ineffective as the backend of draft-time analytics applications. 
+					take a long time to return queries. These APIs are not geared to provide instant or complete results, which 
+					makes them ineffective for use as the backend of draft-time analytics applications. 
 					<br><br>
-					In order to improve performance, the "Dota Stats" (name pending) database is not normalized, and data is stored is stored
-					such that it can be returned with minimal post processing. This implies that many SQL conventions are violated. The primary
-					cost incurred is that adding functionality to the API is likely to involve duplicating data and breaking the 
+					In an effort to improve performance, the "Dota Stats" (name pending) database is not normalized, and data is stored
+					such that it can be returned with minimal post processing. This implies that many SQL conventions are violated. 
+					<!-- provide reasoning as to why is is beneficial in this case, most people don't like the idea of violating convention-->
+					The primary	cost incurred is that adding functionality to the API is likely to involve duplicating data, thus breaking the 
 					<a href="https://en.wikipedia.org/wiki/Single_source_of_truth">Single Source of Truth Principle</a>.
 					<br><br>
-					The benefit is <a href="../stats/matches?heroes=113,2&teams=3331948,2108395" target="_blank">lightning fast queries</a>.
+					However, the benefits received from <a href="../stats/matches?heroes=113,2&teams=3331948,2108395" target="_blank">lightning fast queries</a>
+					far outweigh the costs of the applications in mind.
 
 				</li>
 				<br>
