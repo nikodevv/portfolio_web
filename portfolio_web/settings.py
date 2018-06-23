@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'stats',
     'updateDatabase',
     'rest_framework',
-]
+    'stats_frontend',
+    ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
