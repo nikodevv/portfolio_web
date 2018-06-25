@@ -1,0 +1,30 @@
+{
+  "name": "stats_frontend",
+  "version": "1.0.0",
+  "description": "Ajax/react frontend that utilises stats databaes\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[Dnikodev stats database",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nikodevv/portfolio_web.git"
+  },
+  "author": "Niko Oshinov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nikodevv/portfolio_web/issues"
+  },
+  "homepage": "https://github.com/nikodevv/portfolio_web#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "jquery": "^3.3.1",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1",
+    "webpack": "^4.12.1",
+    "webpack-bundle-tracker": "^0.3.0"
+  }
+}
