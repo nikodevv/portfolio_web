@@ -32,3 +32,9 @@ class Player(models.Model):
 	rad = models.BooleanField()
 	heroid = models.CharField(max_length=255, default='novalue')
 	playerid = models.CharField(max_length=255, default='novalue')
+
+	class Meta:
+		# Validates that there are no player id duplicates per game
+		unique_together = ('match', 'playerid')
+		# Validates that each match has at most one of one hero.
+		unique_together = ('match', 'heroid')
