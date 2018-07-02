@@ -1,14 +1,26 @@
 import dota2api
 import sys, django
 from os.path import dirname, abspath
-import os
-sys.path.append(dirname(dirname(dirname(abspath(__file__)))))
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "portfolio_web.settings")
-django.setup()
+from os import environ
 from stats.models import Tournament, Match, Player
-from django.db import models
+from django.db import models, IntegrityError
 import pickle
 from time import time as timestamp
+
+# Necesary for django ORM to be used inside a standalone script. 
+sys.path.append(dirname(dirname(dirname(abspath(__file__)))))
+environ.setdefault("DJANGO_SETTINGS_MODULE", "portfolio_web.settings")
+django.setup()
+
+def ignore_duplicate_data_error(fn):
+	def wrapper(*args):
+		try:
+			fn(*args)
+		except IntegrityError:
+			print("IntegrityError: Duplicate data. Data not saved to database")
+	return wrapper
+
+
 class Controller:
 	"""
 	Makes API calls and dispatches information to be Processed
@@ -97,6 +109,7 @@ class Processor:
 			if int(mdata['game_mode']) == int(2):
 				return self.pass_data
 		except:
+			print("OK")
 			self.__add_to_log(mdata)
 			return (lambda x: x)
 
@@ -113,7 +126,7 @@ class Processor:
 		self.g_manager.create(tournament_id, match_id, win_r, rad_teamid, 
 			dire_teamid)
 		# passes player data to PlayerManager
-		for i in range(0, 9):
+		for i in range(0, 10):
 			rad = True
 			if i >= 5:
 				rad = False
@@ -243,12 +256,19 @@ class PlayerManager(models.Manager, FieldValidator):
 		entry.rad = rad
 		entry.heroid = hero_id
 		entry.playerid = player_id
-		entry.save()
+		self.__safe_save(entry)
 
 	def get_match_by_id(self, id_):
 		return Match.objects.get(pk=id_)
+
+	# wrapped to skip over duplicate data instead of crash
+	@ignore_duplicate_data_error
+	def __safe_save(self, entry):
+		entry.save()
+
 
 API_KEY = '93E37410337F61C24E4C2496BFB68DE0'
 
 if __name__ == '__main__':
 	models_creator = Controller(API_KEY)
+
