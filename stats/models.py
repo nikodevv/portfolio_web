@@ -4,7 +4,7 @@ from django.db import models
 # Create your models here.
 class Tournament(models.Model):
 	""" 
-	Class representing a pro tournament metadata
+	Class representing a pdro tournament metadata
 	"""
 	tid = models.CharField(max_length=255, primary_key=True, null=False)
 	tindex = models.CharField(max_length=255, default='novalue')
@@ -22,29 +22,13 @@ class Match(models.Model):
 	# Team specific attributes
 	rad_teamid = models.CharField(max_length=255, default='novalue')
 	dire_teamid = models.CharField(max_length=255, default='novalue')
-	rad1_heroid = models.CharField(max_length=10, default='novalue')
-	rad2_heroid = models.CharField(max_length=10, default='novalue')
-	rad3_heroid = models.CharField(max_length=10, default='novalue')
-	rad4_heroid = models.CharField(max_length=10, default='novalue')
-	rad5_heroid = models.CharField(max_length=10, default='novalue')
-	rad1_playerid = models.CharField(max_length=10, default='novalue')
-	rad2_playerid = models.CharField(max_length=10, default='novalue')
-	rad3_playerid = models.CharField(max_length=10, default='novalue')
-	rad4_playerid = models.CharField(max_length=10, default='novalue')
-	rad5_playerid = models.CharField(max_length=10, default='novalue')
-	
-	# Enemy specifc attirbutes
-	dire1_heroid = models.CharField(max_length=10, default='novalue')
-	dire2_heroid = models.CharField(max_length=10, default='novalue')
-	dire3_heroid = models.CharField(max_length=10, default='novalue')
-	dire4_heroid = models.CharField(max_length=10, default='novalue')
-	dire5_heroid = models.CharField(max_length=10, default='novalue')
-	dire1_playerid = models.CharField(max_length=10, default='novalue')
-	dire2_playerid = models.CharField(max_length=10, default='novalue')
-	dire3_playerid = models.CharField(max_length=10, default='novalue')
-	dire4_playerid = models.CharField(max_length=10, default='novalue')
-	dire5_playerid = models.CharField(max_length=10, default='novalue')
 
-class Inventory(models.Model):
-	match = models.ForeignKey(Match, related_name="players_inventories")
-	
+class Player(models.Model):
+	"""
+	Holds match-specifc player info
+	"""
+	match = models.ForeignKey(Match, null=False, blank=True)
+	# True or False whether Player is on radiant side.
+	rad = models.BooleanField()
+	heroid = models.CharField(max_length=255, default='novalue')
+	playerid = models.CharField(max_length=255, default='novalue')
