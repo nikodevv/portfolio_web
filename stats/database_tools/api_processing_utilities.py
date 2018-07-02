@@ -1,6 +1,7 @@
 """
 A collection of utilities for the processing of Valve API data
 """
+from django.db import IntegrityError
 
 def ignore_duplicate_data_error(fn):
 	"""
