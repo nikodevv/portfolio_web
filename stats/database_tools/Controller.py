@@ -76,6 +76,7 @@ class Processor:
 		data to GameManager only if data is valid.
 		"""
 		try:
+			# 2 is game mode for capitins mode
 			if int(mdata['game_mode']) == int(2):
 				return self.pass_data
 		except:
