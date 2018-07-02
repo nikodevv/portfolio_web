@@ -6,19 +6,12 @@ from stats.models import Tournament, Match, Player
 from django.db import models, IntegrityError
 import pickle
 from time import time as timestamp
+from api_processing_utilities import ignore_duplicate_data_error
 
 # Necesary for django ORM to be used inside a standalone script. 
 sys.path.append(dirname(dirname(dirname(abspath(__file__)))))
 environ.setdefault("DJANGO_SETTINGS_MODULE", "portfolio_web.settings")
 django.setup()
-
-def ignore_duplicate_data_error(fn):
-	def wrapper(*args):
-		try:
-			fn(*args)
-		except IntegrityError:
-			print("IntegrityError: Duplicate data. Data not saved to database")
-	return wrapper
 
 
 class Controller:
