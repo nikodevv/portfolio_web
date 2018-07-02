@@ -1,24 +1,24 @@
 import dota2api
 import sys, django
 from os.path import dirname, abspath
-from os import environ
-from stats.models import Tournament, Match, Player
-from django.db import models, IntegrityError
+import os
+from django.db import models
 import pickle
 from time import time as timestamp
 from api_processing_utilities import ignore_duplicate_data_error
 
-# Necesary for django ORM to be used inside a standalone script. 
+# Necesary to recognize directories of django django files
+# and import stats.models.*
 sys.path.append(dirname(dirname(dirname(abspath(__file__)))))
-environ.setdefault("DJANGO_SETTINGS_MODULE", "portfolio_web.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "portfolio_web.settings")
 django.setup()
 
+from stats.models import Tournament, Match, Player
 
 class Controller:
 	"""
 	Makes API calls and dispatches information to be Processed
 	"""
-
 	def __init__(self, API_KEY):
 		# Initializing with start @ 17410-17414, 17415-17418, then 17420-17430, finally 17430-17450
 		self.START_ID = 17410 # using itemdef not id [prev 17430]
