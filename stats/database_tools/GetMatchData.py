@@ -5,7 +5,7 @@ import os
 from django.db import models
 import pickle
 from time import time as timestamp
-from api_processing_utilities import ignore_duplicate_data_error
+from api_processing_utilities import ignore_duplicate_data_error, safe_dict_lookup
 
 # Necesary to recognize directories of django django files
 # and import stats.models.*
@@ -100,22 +100,41 @@ class Processor:
 		try:
 			# 2 is game mode for capitins mode
 			if int(mdata['game_mode']) == int(2):
-				return self.pass_data
+				return self.__pass_data
+			return (lambda x: x)
 		except:
-			print("OK")
-			self.__add_to_log(mdata)
 			return (lambda x: x)
 
-	def pass_data(self, mdata):
+	def __pass_data(self, mdata):
+		"""
+		Finds all data necessary to make database entries and 
+		passes data to constructor for match-relevant models.
+		"""
 		matchData = MatchFilter(mdata)
 		tournament_id = matchData.get_tournament_id()
-		self.__validate_not_null(tournament_id, "tournament_id")
-		
 		match_id = matchData.get_match_id()
 		win_r = matchData.get_winner() # True if radiant won
-		rad_teamid, dire_teamid = matchData.get_team_ids()
+		rad_teamid = matchData.get_rad_team_id()
+		dire_teamid = matchData.get_dire_team_id()
 		players = matchData.get_players()
 		heroes = matchData.get_heroes()
+		self.__construct_match_models(tournament_id, match_id, win_r,
+			rad_teamid, dire_teamid, players, heroes)
+
+	def __construct_match_models(self, tournament_id, match_id, 
+		win_r, rad_teamid, dire_teamid, players, heroes):
+		"""
+		Validates arguments are not null and dispatches data 
+		to models.Managers for models-level construction.
+		"""
+		# doesn't call models.Manager.create() if 
+		# data is missing for any match specific models
+		if (None in [tournament_id,  match_id, 
+			win_r, rad_teamid, dire_teamid, players, heroes]):
+
+			# add logic so that if a None value is passed as an argument
+			# the match id is logged.
+			return None
 		self.g_manager.create(tournament_id, match_id, win_r, rad_teamid, 
 			dire_teamid)
 		# passes player data to PlayerManager
@@ -132,18 +151,7 @@ class Processor:
 		validation
 		"""
 		if data == None:
-			__add_to_log({"Data Error":
-				"No valid tournament_id found in match", 
-				"match_data": data['match_id']})
 			raise Exception(data is not None, "%s is null" % dataname)
-
-	def __add_to_log(self, data):
-		with open('errorLog.txt', 'a') as log:
-			# Python automatically uses correct line endings
-			# to insert new line via \n
-			log.write('\n%s\n' % timestamp())
-			pickle.dump(data, log)
-
 
 	def get_match_ids_from_api_call(self, data):
 		return [match['match_id'] for match in data['matches']]
@@ -181,41 +189,41 @@ class MatchFilter:
 	def __init__(self, mdata):
 		self.mdata = mdata
 
+	@safe_dict_lookup
 	def get_heroes(self):
 		player_data = self.mdata['players']
 		return [player['hero_id'] for player in player_data]
 
+	@safe_dict_lookup
 	def get_players(self):	
 		player_data = self.mdata['players']
 		return [player['account_id'] for player in player_data]
 
-	def get_team_ids(self):
+	@safe_dict_lookup
+	def get_rad_team_id(self):
 		"""
 		Finds and returns team ids from valve API match_detail call. 
 		"""
-		# Sometimes team_ids are not recorded. 
-		# i.e. the key 'radiant_team_id' is not in mdata.
-		# In such cases default values of 1 or 2 are assigned 
-		try:
-			radiant = self.mdata['radiant_team_id']
-		except:
-			__add_to_log({"Data Error": "No radiant team id for match", 
-				"match_data": self.mdata})
-			radiant = "1"
-		try:
-			dire = self.mdata['dire_team_id']
-		except:
-			__add_to_log({"Data Error": "No dire team id for match", 
-				"match_data": self.mdata})
-			dire = "2"
-		return radiant, dire
+		radiant = self.mdata['radiant_team_id']
+		return radiant
 
+	@safe_dict_lookup
+	def get_dire_team_id(self):
+		"""
+		Finds and returns team ids from valve API match_detail call. 
+		"""
+		dire = self.mdata['dire_team_id']
+		return dire
+
+	@safe_dict_lookup
 	def get_tournament_id(self):
 		return self.mdata['leagueid']
 
+	@safe_dict_lookup
 	def get_winner(self):
 		return self.mdata['radiant_win']
 
+	@safe_dict_lookup
 	def get_match_id(self):
 		return self.mdata['match_id']
 
