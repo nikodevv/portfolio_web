@@ -2,3 +2,4 @@
 *.uxf
 /static/SSL_cert.txt
 .pytest_cache/
+errorLog.txt
