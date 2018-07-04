@@ -61,23 +61,27 @@ class TeamQueryFilter:
 
 	@staticmethod
 	def _filter_teams(queryset, teams):
+		"""
+		Sends the data to be filtered as a union.
+		"""
 		# sets queryset to match any games with first team in teams
 		# thus eliminating any non-relevant matches for the remainder of the query?????
 		if isinstance(teams, list) == True:
-			final_queryset = TeamQueryFilter._filter_for_team_id(queryset, teams[0])
+			final_queryset = TeamQueryFilter.__filter_for_team_id(queryset, teams[0])
 		else:
-			final_queryset = TeamQueryFilter._filter_for_team_id(queryset, teams)
+			final_queryset = TeamQueryFilter.__filter_for_team_id(queryset, teams)
 			return final_queryset
 
 		# unites querysets for each team to the first
 		for team in teams:
 			if team is not teams[0]:
 				final_queryset = (final_queryset | 
-					TeamQueryFilter._filter_for_team_id(queryset, team))
+					TeamQueryFilter.__filter_for_team_id(queryset, team))
 		return final_queryset
-	
+
+	#This is what actually interacts with database.	
 	@staticmethod
-	def _filter_for_team_id(queryset, team_id):
+	def __filter_for_team_id(queryset, team_id):
 		return queryset.filter(
 			Q(rad_teamid=team_id) | Q(dire_teamid=team_id)
 			)
