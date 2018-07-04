@@ -29,7 +29,7 @@ def safe_dict_lookup(fn):
 	"""
 	def wrapper(*args, **kwargs):
 		try:
-			fn(*args)
+			return fn(*args)
 		except KeyError:
 			log_str = (ctime(time()) + 
 				" - prevented KeyError crash by call to" + fn.__name__ + 
