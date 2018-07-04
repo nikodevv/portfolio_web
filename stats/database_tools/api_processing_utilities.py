@@ -13,7 +13,7 @@ def ignore_duplicate_data_error(fn):
 
 	def wrapper(*args, **kwargs):
 		try:
-			fn(*args)
+			return fn(*args)
 		except IntegrityError:
 			log_str = (ctime(time()) + 
 				" - prevented IntegrityError crash by call to " + fn.__name__ + 
