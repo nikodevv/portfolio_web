@@ -1,9 +1,7 @@
 from rest_framework import serializers
-from stats.models import Tournament, Match
+from stats.models import Tournament, Match, Player
 
 class TournamentSerializer(serializers.ModelSerializer):
-	# matches stats.models.Tournament fields with corresponding names,
-	# effectively filtering them.
 	class Meta:
 		model = Tournament
 		fields = ('tid', 'tname')
@@ -17,3 +15,7 @@ class MatchSerializer(serializers.ModelSerializer):
 		# serialize all fields
 		fields = "__all__"
 
+class PlayerSerializers(serializers.ModelSerializer):
+	class Meta:
+		model = Player
+		fields = "__all__"
