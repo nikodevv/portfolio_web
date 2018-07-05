@@ -22,7 +22,7 @@ class Controller:
 	def __init__(self, API_KEY):
 		# Initializing with start @ 17410-17414, 17415-17418, then 17420-17430, finally 17430-17450
 		self.START_ID = 17410 # using itemdef not id [prev 17430]
-		self.END_ID = 17417 # using itemdef not id #previously 17450
+		self.END_ID = 17450 # using itemdef not id #previously 17450
 		self.api = dota2api.Initialise(API_KEY)
 		self.processor = Processor(self.START_ID, self.END_ID)
 		self.create_tournaments()
@@ -131,7 +131,6 @@ class Processor:
 		# data is missing for any match specific models
 		if (None in [tournament_id,  match_id, 
 			win_r, rad_teamid, dire_teamid, players, heroes]):
-
 			# add logic so that if a None value is passed as an argument
 			# the match id is logged.
 			return None
@@ -272,4 +271,4 @@ API_KEY = '93E37410337F61C24E4C2496BFB68DE0'
 
 if __name__ == '__main__':
 	models_creator = Controller(API_KEY)
-
+	print("Data pull complete.")

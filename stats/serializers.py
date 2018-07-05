@@ -7,15 +7,16 @@ class TournamentSerializer(serializers.ModelSerializer):
 		fields = ('tid', 'tname')
 		read_only_fields = fields
 
-class MatchSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = Match
-		# django > 3.5 requires sepcifing fields = "__all__"
-		# otherwise default behaviour is to automatically
-		# serialize all fields
-		fields = "__all__"
 
-class PlayerSerializers(serializers.ModelSerializer):
+
+class PlayerSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Player
-		fields = "__all__"
+		fields = ("rad","heroid","playerid")
+
+class MatchSerializer(serializers.ModelSerializer):
+	players = PlayerSerializer(many=True, source='player_set')
+	class Meta:
+		model = Match
+		fields = ("tournament", "mid", "rad_teamid","dire_teamid",
+		"win_radiant", "players")
