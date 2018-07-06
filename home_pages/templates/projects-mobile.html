@@ -5,6 +5,33 @@
 		<!-- differs from non-mobile page removing centering containers and 
 			featuring a different container class for each li element -->
 		<ul class="custom-text-style sm-font pl-2 pr-2">
+			<!--Entry Start - Stats database -->
+			<h2 class = "h2 mt-2">Marketing Website Contract</h2>
+			<div class ="pl-2 pr-2">
+				<li class="list-unstyled">
+					Dota 2 is a video game with a multi-million dollar professional scene. Before each
+					game, teams draft Heroes from a common pool, which have a significant impact on the strategic aspects of 
+					the game. During a draft, a team caught off guard stands to lose millions in potential earnings, which paves 
+					the way for draft-time analytics tools to add value. 
+					<br><br>
+					With this in mind, I created a Dota 2 statistics database which stores professional match data.
+					Although comparable databases and APIs exist, they tend to either constrict the number of results returned, or 
+					take a long time to return queries. 
+					<br><br>
+					In order to build a real time draft analytics app, I had to create my own backend. This is it. 
+					Match data is pulled from Valve's public API, and aggregated/processed into models aimed to deliver
+					<a href="../stats/matches?heroes=113,2&teams=3331948,2108395" target="_blank">lightning fast queries</a>.
+					Processing is done in Python, model interaction is done via Django's ORM, and 
+					<br><br>
+					Djano/DRF/postgreSQL stack. Frontend pending...
+				</li>
+				<!-- Commented out; picture doesnt look good on mobile
+					<div class="projects-thumb zoom d-flex flex-row justify-content-center">
+						<img class="" src="/static/pictures/projects/crypto.png" title="screenshot of module"/>
+					</div>
+				-->
+				<br>
+			</div>
 			<!-- Entry Start - crypto currency -->
 			<h2 class = "h2 mt-2">Marketing Website Contract</h2>
 			<div class ="pl-2 pr-2">
@@ -14,7 +41,7 @@
 					I was contracted to develop an interactive JavaScript module which calculated and graphed expected investment returns,
 					dividend payments, and equity costs based on the current and dynamically changing market value of ETH/CAD.
 				</li>
-				<!-- Commented out because picture doesnt look good on mobile
+				<!-- Commented out; picture doesnt look good on mobile
 					<div class="projects-thumb zoom d-flex flex-row justify-content-center">
 						<img class="" src="/static/pictures/projects/crypto.png" title="screenshot of module"/>
 					</div>
