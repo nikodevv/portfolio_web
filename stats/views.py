@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.db.models import Q
-from stats.models import Tournament, Match
+from stats.models import Tournament, Match, Player
 from stats.serializers import TournamentSerializer, MatchSerializer
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView
@@ -56,11 +56,11 @@ class TeamQueryFilter:
 		team_id = request.query_params.get('teams', None)
 		if team_id is not None:
 			team_id = team_id.split(",") 
-			queryset = TeamQueryFilter._filter_teams(queryset, team_id)
+			queryset = TeamQueryFilter.__filter_teams(queryset, team_id)
 		return queryset
 
 	@staticmethod
-	def _filter_teams(queryset, teams):
+	def __filter_teams(queryset, teams):
 		"""
 		Sends the data to be filtered as a union.
 		"""
@@ -93,12 +93,18 @@ class HeroQueryFilter:
 		hero_ids = request.query_params.get('heroes', None)
 		if hero_ids is not None:
 			hero_ids = hero_ids.split(",")
-			queryset = HeroQueryFilter._filter_heroes(queryset, hero_ids)
+			queryset = HeroQueryFilter.__filter_heroes(queryset, hero_ids)
 		return queryset
 
 	@staticmethod
-	def _filter_heroes(queryset, hero_ids):
-		# iterates over list if id_ is lists, else just calls function directly
+	def __filter_heroes(queryset, hero_ids):
+		"""
+		Sends heroset to be filtered against queryset such that
+		all entries which match one hero_id are returned
+		"""
+		# iterates over list if id_ is lists passing each id to be filtered
+		# against queryset
+		# else just calls function directly for one id
 		if isinstance(hero_ids, list) == True:
 			final_queryset = HeroQueryFilter._get_relevant_matches(hero_ids[0], queryset)
 			for id_ in hero_ids:
@@ -112,15 +118,6 @@ class HeroQueryFilter:
 	@staticmethod
 	def _get_relevant_matches(id_, queryset):
 		queryset = queryset.filter(
-			Q(rad1_heroid=id_) |
-			Q(rad2_heroid=id_) |
-			Q(rad3_heroid=id_) |
-			Q(rad4_heroid=id_) |
-			Q(rad5_heroid=id_) |
-			Q(dire1_heroid=id_) |
-			Q(dire2_heroid=id_) |
-			Q(dire3_heroid=id_) |
-			Q(dire4_heroid=id_) |
-			Q(dire5_heroid=id_) 
+			player__heroid=id_
 			)
 		return queryset
