@@ -3,3 +3,5 @@
 /static/SSL_cert.txt
 .pytest_cache/
 errorLog.txt
+/static/rest_framework
+/static/rest_framework_old
