@@ -4,4 +4,5 @@
 .pytest_cache/
 errorLog.txt
 /static/rest_framework
-/static/rest_framework_olds
+/static/rest_framework_oldsstats_frontend/node_modules/*
+stats_frontend/node_modules/*
