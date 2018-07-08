@@ -1,4 +1,0 @@
-django==1.11.5
-json
-dota2_api
-djangorestframework

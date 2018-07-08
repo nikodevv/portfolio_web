@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'stats',
     'updateDatabase',
     'rest_framework',
+    'webpack_loader'
 ]
 
 MIDDLEWARE = [
@@ -144,4 +145,12 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATICFILES_DIRS = [ os.path.join(PROJECT_ROOT, 'home_pages/static/')]
+STATICFILES_DIRS = [ os.path.join(PROJECT_ROOT, 'home_pages/static/'),
+    os.path.join(PROJECT_ROOT,'stats_frontend/assets')]
+
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'BUNDLE_DIR_NAME': 'bundles/',
+        'STATS_FILE': os.path.join(PROJECT_ROOT, 'webpack-stats.json'),
+    }
+}
