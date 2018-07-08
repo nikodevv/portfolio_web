@@ -1,6 +1,6 @@
 var path = require('path');
 var webpack = require('webpack');
-
+var BundleTracker = require('webpack-bundle-tracker')
 
 module.exports = {
     context:__dirname,
@@ -10,17 +10,28 @@ module.exports = {
         path: path.resolve('./assets/bundles/'),
         filename: '[name]-[hash].js',
     },
+    plugins: [
+        new BundleTracker({filename: './webpack-stats.json'}),
+        /* // Makes jQuery available to every plugin
+        new webpack.ProvidePlugin({
+            $: 'jquery',
+            jQuery: 'jquery',
+            'window.jQuery': jquery
+        })
+        */
+    ]
+    ,
     module: {
         rules:[
-          {
-            test: /\.(js|jsx)$/,
-            exclude: /node_modules/,
-            loader: 'babel-loader',
-            options: {
+            {
+                test: /\.(js|jsx)$/,
+                exclude: /node_modules/,
+                loader: 'babel-loader',
+                options: {
                 // babelrc: false,
-                presets: ["react", "es2015"]
-            },
-          }
+                    presets: ["react", "es2015"]
+                },
+            }
         ]
     },
     resolve: {
