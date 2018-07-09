@@ -151,6 +151,6 @@ STATICFILES_DIRS = [ os.path.join(PROJECT_ROOT, 'home_pages/static/'),
 WEBPACK_LOADER = {
     'DEFAULT': {
         'BUNDLE_DIR_NAME': 'bundles/',
-        'STATS_FILE': os.path.join(PROJECT_ROOT, 'webpack-stats.json'),
+        'STATS_FILE': os.path.join(PROJECT_ROOT, 'stats_frontend/webpack-stats.json'),
     }
 }

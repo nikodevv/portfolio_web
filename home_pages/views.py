@@ -34,3 +34,6 @@ def toronto_sky_view(request):
 
 def toronto_sky_m_view(request):
 	return render(request, 'toronto_sky-mobile.html', {'current_page': 'Projects'})
+
+def react_test(request):
+	return render(request, 'react-app.html')
