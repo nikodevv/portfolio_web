@@ -39,18 +39,24 @@ var developmentSettings = {
         }
     }
 };
-
 module.exports = {
     context:__dirname,
+    /* entry is the same in production and development hence
+       the entry setting with a string (as opposed to using 
+       developmentSettings.SOMEFUNCTION()) */
     entry: './assets/js/index',
-    mode: developmentSettings.getMode(), // change to system variable in future
+    mode: 'development',
     /*  under current configuration Django will store 
         both entry and output files in static folder.
         One way to avoid this is to change .assets/bundles
         to ./assets/output/bundles, and to then collectstatic
         from ./assets/output
     */  
-    output: developmentSettings.getOutput(),
+    output: {
+        path: path.join(__dirname, 
+            'assets/development_bundles/'),
+        filename: 'app.js',
+    },
     plugins: [
         new BundleTracker({filename: './webpack-stats.json'}),
         /* // Makes jQuery available to every plugin
@@ -78,4 +84,9 @@ module.exports = {
     resolve: {
         extensions: ['*', '.js', '.jsx']
     },
+    devServer:{
+        compress: false,
+        port: 8080,
+        publicPath: '/assets/'
+    }
 };
