@@ -1,3 +1,4 @@
+import {combineReducers} from 'redux';
 "use strict";
 
 /** Actions */
@@ -58,7 +59,7 @@ var initialState = {
 
 
 // Reducers (specify how state will change)
-function heroCardFilter(state =[], action){
+function heroCards(state = generateHeroCards(), action){
     switch(action.type){
         // sets a given heroCards as search relevant
         case S_REL:
@@ -72,7 +73,7 @@ function heroCardFilter(state =[], action){
         };
 };
 
-function srchFilterUpdate(state="", action){
+function searchStr(state="", action){
     switch(action.type){
         case ADD_TO_HERO_SRCH:
             return state + action.key
@@ -88,26 +89,9 @@ function srchFilterUpdate(state="", action){
     };
 };
 
-function heroSearchApp(state = initialState, action){
-    switch (action.type){
-        case S_REL:
-            return Object.assign({}, state, {heroCards: heroCardFilter(state.heroCards, action)})
-        case S_DISQ:
-            return Object.assign({}, state, {heroCards: heroCardFilter(state.heroCards, action)})
-
-        case ADD_TO_HERO_SRCH:
-            return Object.assign({}, state,
-                {searchStr: srchFilterUpdate(state.searchStr, action)})
-        
-        case RMV_FRM_HERO_SRCH:
-            return Object.assign({}, state, srchFilterUpdate(state.searchStr, action))
-
-        case DEL_HERO_SRCH:
-            return Object.assign({}, state, {searchStr: srchFilterUpdate(state.searchStr, action)});
-
-        default:
-            return state;
-    };
-};
+const heroSearchApp = combineReducers({
+    heroCards,
+    searchStr   
+});
 
 export default heroSearchApp;
