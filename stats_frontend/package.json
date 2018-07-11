@@ -24,5 +24,8 @@
     "start:dev": "webpack-dev-server"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "babel": {
+    "presets": ["es2015", "react"]
+  }
 }
