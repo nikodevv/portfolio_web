@@ -58,32 +58,52 @@ var initialState = {
 
 
 // Reducers (specify how state will change)
+function heroCardFilter(state =[], action){
+    switch(action.type){
+        // sets a given heroCards as search relevant
+        case S_REL:
+            var heroCards = state;
+            heroCards[action.heroID-1].searchRelevant = true;
+            return heroCards;
+        case S_DISQ:
+            var heroCards = state;
+            heroCards[action.heroID-1].searchRelevant = false;
+            return heroCards;
+        };
+};
+
+function srchFilterUpdate(state="", action){
+    switch(action.type){
+        case ADD_TO_HERO_SRCH:
+            return state + action.key
+        case RMV_FRM_HERO_SRCH:
+            if(state===""){
+                return state
+            }
+            else{
+                state.substring(0,state.length-1)
+            };
+        case DEL_HERO_SRCH:
+            return "";
+    };
+};
+
 function heroSearchApp(state = initialState, action){
     switch (action.type){
         case S_REL:
-            const heroCards = state.heroCards
-            heroCards[action.heroID-1].searchRelevant = true;
-            return Object.assign({}, state, {heroCards: heroCards})
+            return Object.assign({}, state, {heroCards: heroCardFilter(state.heroCards, action)})
         case S_DISQ:
-            const heroCards = state.heroCards
-            heroCards[action.heroID-1].searchRelevant = false;
-            return Object.assign({}, state, {heroCards: heroCards})
+            return Object.assign({}, state, {heroCards: heroCardFilter(state.heroCards, action)})
 
         case ADD_TO_HERO_SRCH:
             return Object.assign({}, state,
-                {searchStr: state.searchStr + action.key})
+                {searchStr: srchFilterUpdate(state.searchStr, action)})
         
         case RMV_FRM_HERO_SRCH:
-            if (state.searchStr===""){
-                return Object.assign({},state);
-            }
-            else{
-                const STR = state.searchStr;
-                return Object.assign({}, state, 
-                    {searchStr: STR.substring(0,STR.length-1)});
-            }
+            return Object.assign({}, state, srchFilterUpdate(state.searchStr, action))
+
         case DEL_HERO_SRCH:
-            return Object.assign({}, state, {searchStr: ""});
+            return Object.assign({}, state, {searchStr: srchFilterUpdate(state.searchStr, action)});
 
         default:
             return state;
