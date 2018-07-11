@@ -1,5 +1,4 @@
 import {combineReducers} from 'redux';
-"use strict";
 
 /** Actions */
 // 'type' for non-search relevant heros
@@ -43,10 +42,10 @@ export function deleteHeroSearchStr(){
 
 var generateHeroCards = function(){
     var heroCards = Array(115);
-    for (i=0;i<heroCards.length-1;i++){
+    for (var i=0;i<heroCards.length-1;i++){
         heroCards[i] = { 
-            heroID = heroCards[i],
-            searchRelevant = true,
+            heroID: heroCards[i],
+            searchRelevant: true,
         }
     };
     return heroCards;
@@ -70,7 +69,10 @@ function heroCards(state = generateHeroCards(), action){
             var heroCards = state;
             heroCards[action.heroID-1].searchRelevant = false;
             return heroCards;
+        default:
+            return state
         };
+        
 };
 
 function searchStr(state="", action){
@@ -86,6 +88,8 @@ function searchStr(state="", action){
             };
         case DEL_HERO_SRCH:
             return "";
+        default:
+            return state
     };
 };
 

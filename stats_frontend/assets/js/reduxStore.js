@@ -1,5 +1,5 @@
-import {createStore} from 'redux';
-import {heroSearchApp} from './reducers';
+import { createStore } from 'redux';
+import heroSearchApp from './reducers.js';
 import {
     offToggleRelevantHero,
     onToggleRelevantHero,
