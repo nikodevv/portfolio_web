@@ -16,28 +16,28 @@ const DEL_HERO_SRCH = "DELETE_HERO_SEARCH_STR";
 
 /**Action Creators */
 // why the fuck do i need these
-function offToggleRelevantHero(heroID){
+export function offToggleRelevantHero(heroID){
     return {
         type: S_DISQ,
         heroID: heroID
     };
 };
-function onToggleRelevantHero(heroID){
+export function onToggleRelevantHero(heroID){
     return{
         type: S_REL,
         heroID: heroID
     }
 };
-function extendHeroSearchStr(key){
+export function extendHeroSearchStr(key){
     return{
         type: ADD_TO_HERO_SRCH,
         key: key
     };
 };
-function reduceHeroSearchStr(){
+export function reduceHeroSearchStr(){
     return{type: RMV_FRM_HERO_SRCH};
 };
-function deleteHeroSearchStr(){
+export function deleteHeroSearchStr(){
     return{type: DEL_HERO_SRCH};
 };
 
