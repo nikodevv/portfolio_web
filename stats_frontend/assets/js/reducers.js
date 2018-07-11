@@ -13,12 +13,6 @@ const RMV_FRM_HERO_SRCH = "REMOVE_FROM_SEARCH_STR";
 const DEL_HERO_SRCH = "DELETE_HERO_SEARCH_STR";
 
 
-/**Other constants */
-const SRCH_RELEVANCE_STATES = {
-    REL: 'SEARCH_RELEVANT',
-    DISQ: "SEARCH_DISQUALIFIED"
-};
-
 /**Action Creators */
 // why the fuck do i need these
 function offToggleRelevantHero(heroID){
@@ -46,35 +40,50 @@ function deleteHeroSearchStr(){
     return{type: DEL_HERO_SRCH};
 };
 
-// Reducers (specify how state will change)
-
-const initialState = {
-    relevance: SRCH_RELEVANCE_STATES.REL,
-    SEARCH_STR: ""
+var generateHeroCards = function(){
+    var heroCards = Array(115);
+    for (i=0;i<heroCards.length-1;i++){
+        heroCards[i] = { 
+            heroID = heroCards[i],
+            searchRelevant = true,
+        }
+    };
+    return heroCards;
 };
 
+var initialState = {
+    heroCards: generateHeroCards(),
+    searchStr: ""
+};
+
+
+// Reducers (specify how state will change)
 function heroSearchApp(state = initialState, action){
     switch (action.type){
         case S_REL:
-            return Object.assign({},state, 
-                {relevance: SRCH_RELEVANCE_STATES.REL});
+            const heroCards = state.heroCards
+            heroCards[action.heroID-1].searchRelevant = true;
+            return Object.assign({}, state, {heroCards: heroCards})
         case S_DISQ:
-            return Object.assign({}, state, 
-                {relevance: SRCH_RELEVANCE_STATES.DISQ});
+            const heroCards = state.heroCards
+            heroCards[action.heroID-1].searchRelevant = false;
+            return Object.assign({}, state, {heroCards: heroCards})
+
         case ADD_TO_HERO_SRCH:
-            return Object.assign({}, state, {SEARCH_STR: state.SEARCH_STR + action.key});
+            return Object.assign({}, state,
+                {searchStr: state.searchStr + action.key})
         
         case RMV_FRM_HERO_SRCH:
-            if (state.SEARCH_STR===""){
+            if (state.searchStr===""){
                 return Object.assign({},state);
             }
             else{
-                const STR = state.SEARC_STR;
+                const STR = state.searchStr;
                 return Object.assign({}, state, 
-                    {SEARCH_STR: STR.substring(0,STR.length-1)});
+                    {searchStr: STR.substring(0,STR.length-1)});
             }
-        case ADD_TO_HERO_SRCH:
-            return Object.assign({}, state, {SEARCH_STR: ""});
+        case DEL_HERO_SRCH:
+            return Object.assign({}, state, {searchStr: ""});
 
         default:
             return state;
