@@ -88,4 +88,6 @@ function heroSearchApp(state = initialState, action){
         default:
             return state;
     };
-}
+};
+
+export default heroSearchApp;
